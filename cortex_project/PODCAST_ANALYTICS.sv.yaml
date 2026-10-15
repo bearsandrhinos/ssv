@@ -22,6 +22,10 @@ tables:
         expr: LAST_NAME
         data_type: VARCHAR
         description: User last name
+      - name: FULL_NAME
+        expr: FIRST_NAME || ' ' || LAST_NAME
+        data_type: VARCHAR
+        description: User full name
       - name: EMAIL
         expr: EMAIL
         data_type: VARCHAR
