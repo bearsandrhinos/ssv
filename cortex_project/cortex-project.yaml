@@ -1,0 +1,7 @@
+version: 1
+artifacts:
+  - path: PODCAST_ANALYTICS.sv.yaml
+    type: semantic_view
+    targets:
+      default:
+        object: ANALYTICS_PROD.COCO_DEMO.PODCAST_ANALYTICS
