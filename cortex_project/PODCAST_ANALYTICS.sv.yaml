@@ -27,14 +27,14 @@ tables:
         data_type: VARCHAR(16777216)
         access_modifier: public_access
       - name: HOST_NAME
-        description: Name of the podcast host
-        expr: HOST_NAME
-        data_type: VARCHAR(16777216)
-        access_modifier: public_access
         synonyms:
           - Host
           - Presenter
           - Podcast Creator
+        description: Name of the podcast host
+        expr: HOST_NAME
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
       - name: IS_EXPLICIT
         description: Whether the podcast contains explicit content
         expr: IS_EXPLICIT
@@ -88,7 +88,7 @@ tables:
         access_modifier: public_access
       - name: TOTAL_PODCASTS
         description: Total number of podcasts in the catalog.  I am multipling this by two now
-        expr: COUNT(PODCAST_ID * 2)
+        expr: COUNT(PODCAST_ID)
         access_modifier: public_access
       - name: TOTAL_SUBSCRIBERS
         description: Total subscriber count across all podcasts
