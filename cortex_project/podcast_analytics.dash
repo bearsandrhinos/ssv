@@ -1,0 +1,1258 @@
+{
+  "spec_version": 2,
+  "spec_revision": 13,
+  "version": 2,
+  "title": "Podcast Analytics",
+  "tabs": [
+    {
+      "tab_id": "overview",
+      "title": "Overview",
+      "tiles": [
+        {
+          "tile_id": "kpi-total-streams",
+          "title": "Total Streams",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "TOTAL_STREAMS",
+                  "labelField": "",
+                  "format": "decimal",
+                  "decimals": 0,
+                  "abbreviate": true,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-kpis"
+          ]
+        },
+        {
+          "tile_id": "kpi-unique-listeners",
+          "title": "Unique Listeners",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "UNIQUE_LISTENERS",
+                  "labelField": "",
+                  "format": "decimal",
+                  "decimals": 0,
+                  "abbreviate": true,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-kpis"
+          ]
+        },
+        {
+          "tile_id": "kpi-listened-minutes",
+          "title": "Minutes Listened",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "TOTAL_LISTENED_MINUTES",
+                  "labelField": "",
+                  "format": "decimal",
+                  "decimals": 0,
+                  "abbreviate": true,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-kpis"
+          ]
+        },
+        {
+          "tile_id": "kpi-avg-minutes",
+          "title": "Avg Minutes / Stream",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "AVG_MINUTES_PER_STREAM",
+                  "labelField": "",
+                  "format": "decimal",
+                  "decimals": 1,
+                  "abbreviate": true,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-kpis"
+          ]
+        },
+        {
+          "tile_id": "kpi-completion-rate",
+          "title": "Avg Completion",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "AVG_COMPLETION_RATE",
+                  "labelField": "",
+                  "format": "percent",
+                  "decimals": 1,
+                  "abbreviate": true,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-kpis"
+          ]
+        },
+        {
+          "tile_id": "kpi-download-rate",
+          "title": "Download Rate",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "DOWNLOAD_RATE",
+                  "labelField": "",
+                  "format": "percent",
+                  "decimals": 1,
+                  "abbreviate": true,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-kpis"
+          ]
+        },
+        {
+          "tile_id": "weekly-streams-listeners",
+          "title": "Weekly Streams & Listeners",
+          "type": "chart",
+          "spec": {
+            "mark": {
+              "type": "line",
+              "innerRadius": {
+                "expr": "min(width, height) / 2 * 0.2"
+              }
+            },
+            "encoding": {
+              "x": {
+                "scale": {
+                  "type": "utc"
+                },
+                "field": "WEEK",
+                "type": "temporal",
+                "sort": null
+              },
+              "y": {
+                "field": "STREAMS",
+                "type": "quantitative",
+                "aggregate": "sum",
+                "axis": {
+                  "labelExpr": "abs(datum.value) >= 1000 ? format(datum.value, '.3~s') : format(datum.value, '')"
+                }
+              },
+              "tooltip": [
+                {
+                  "field": "WEEK"
+                },
+                {
+                  "field": "STREAMS",
+                  "aggregate": "sum"
+                }
+              ]
+            },
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "title": "",
+            "usermeta": {
+              "snowflake": {
+                "chartType": "line",
+                "scorecardConfig": {
+                  "currentColumn": "STREAMS",
+                  "labelField": "",
+                  "format": "decimal",
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "prevColumn": "",
+                  "seriesField": "",
+                  "seriesBucketField": "",
+                  "seriesValueField": ""
+                },
+                "chartConfig": {
+                  "dataLabels": {
+                    "enabled": false
+                  },
+                  "format": {
+                    "abbreviateNumbers": true
+                  },
+                  "centerTotal": {
+                    "enabled": false
+                  }
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-weekly-engagement"
+          ]
+        },
+        {
+          "tile_id": "weekly-minutes",
+          "title": "Weekly Minutes Listened",
+          "type": "chart",
+          "spec": {
+            "mark": "area",
+            "encoding": {
+              "x": {
+                "field": "WEEK",
+                "type": "temporal",
+                "title": "Week"
+              },
+              "y": {
+                "field": "LISTENED_MINUTES",
+                "type": "quantitative",
+                "title": "Minutes"
+              }
+            }
+          },
+          "datasources": [
+            "ds-weekly-engagement"
+          ]
+        },
+        {
+          "tile_id": "streams-by-genre",
+          "title": "Streams by Genre",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "STREAMS",
+                "type": "quantitative",
+                "title": "Streams"
+              },
+              "y": {
+                "field": "GENRE",
+                "type": "nominal",
+                "sort": "-x",
+                "title": null
+              },
+              "tooltip": [
+                {
+                  "field": "GENRE",
+                  "type": "nominal"
+                },
+                {
+                  "field": "STREAMS",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "AVG_COMPLETION_PCT",
+                  "type": "quantitative"
+                }
+              ]
+            }
+          },
+          "datasources": [
+            "ds-genre-performance"
+          ]
+        },
+        {
+          "tile_id": "streams-by-context",
+          "title": "Streams by Listening Context",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "STREAMS",
+                "type": "quantitative",
+                "title": "Streams"
+              },
+              "y": {
+                "field": "LISTENING_CONTEXT",
+                "type": "nominal",
+                "sort": "-x",
+                "title": null
+              },
+              "tooltip": [
+                {
+                  "field": "LISTENING_CONTEXT",
+                  "type": "nominal"
+                },
+                {
+                  "field": "STREAMS",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "AVG_COMPLETION_PCT",
+                  "type": "quantitative"
+                }
+              ]
+            }
+          },
+          "datasources": [
+            "ds-listening-context"
+          ]
+        }
+      ]
+    },
+    {
+      "tab_id": "content",
+      "title": "Content Performance",
+      "tiles": [
+        {
+          "tile_id": "podcast-leaderboard",
+          "type": "table",
+          "title": "Podcast Leaderboard",
+          "datasources": [
+            "ds-podcast-performance"
+          ],
+          "spec": {
+            "columns": [
+              {
+                "field": "TITLE"
+              },
+              {
+                "field": "GENRE"
+              },
+              {
+                "field": "STREAMS"
+              },
+              {
+                "field": "LISTENERS"
+              },
+              {
+                "field": "AVG_COMPLETION_PCT"
+              },
+              {
+                "field": "RATING"
+              },
+              {
+                "field": "SUBSCRIBERS"
+              }
+            ],
+            "sort": [
+              {
+                "field": "STREAMS",
+                "direction": "desc"
+              }
+            ]
+          }
+        },
+        {
+          "tile_id": "rating-vs-subscribers",
+          "type": "chart",
+          "title": "Rating vs Subscribers (size = streams)",
+          "datasources": [
+            "ds-podcast-performance"
+          ],
+          "spec": {
+            "mark": "point",
+            "encoding": {
+              "x": {
+                "field": "RATING",
+                "type": "quantitative",
+                "scale": {
+                  "zero": false
+                },
+                "title": "Rating"
+              },
+              "y": {
+                "field": "SUBSCRIBERS",
+                "type": "quantitative",
+                "title": "Subscribers"
+              },
+              "size": {
+                "field": "STREAMS",
+                "type": "quantitative"
+              },
+              "color": {
+                "field": "GENRE",
+                "type": "nominal"
+              },
+              "tooltip": [
+                {
+                  "field": "TITLE",
+                  "type": "nominal"
+                },
+                {
+                  "field": "RATING",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "SUBSCRIBERS",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "STREAMS",
+                  "type": "quantitative"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tile_id": "completion-by-genre",
+          "type": "chart",
+          "title": "Avg Completion % by Genre",
+          "datasources": [
+            "ds-genre-performance"
+          ],
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "AVG_COMPLETION_PCT",
+                "type": "quantitative",
+                "title": "Avg Completion Pct"
+              },
+              "y": {
+                "field": "GENRE",
+                "type": "nominal",
+                "sort": "-x",
+                "title": null
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "completion-distribution",
+          "type": "chart",
+          "title": "Completion Distribution (10% buckets)",
+          "datasources": [
+            "ds-completion-distribution"
+          ],
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "COMPLETION_BUCKET",
+                "type": "ordinal",
+                "title": "Completion % (bucket start)"
+              },
+              "y": {
+                "field": "STREAMS",
+                "type": "quantitative",
+                "title": "Streams"
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "download-split",
+          "type": "chart",
+          "title": "Downloaded vs Streamed",
+          "datasources": [
+            "ds-download-split"
+          ],
+          "spec": {
+            "mark": "arc",
+            "encoding": {
+              "theta": {
+                "field": "STREAMS",
+                "type": "quantitative"
+              },
+              "color": {
+                "field": "PLAYBACK_MODE",
+                "type": "nominal"
+              }
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "innerRadius": 0
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tab_id": "audience",
+      "title": "Audience",
+      "tiles": [
+        {
+          "tile_id": "listeners-by-age",
+          "title": "Listeners by Age Band",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "AGE_BAND",
+                "type": "nominal"
+              },
+              "y": {
+                "field": "LISTENERS",
+                "type": "quantitative",
+                "title": "Listeners",
+                "axis": {
+                  "labelExpr": "abs(datum.value) >= 1000 ? format(datum.value, '.3~s') : format(datum.value, '')"
+                }
+              },
+              "tooltip": [
+                {
+                  "field": "AGE_BAND"
+                },
+                {
+                  "field": "LISTENERS",
+                  "title": "Listeners"
+                }
+              ]
+            },
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "title": "",
+            "usermeta": {
+              "snowflake": {
+                "chartType": "stacked-bar"
+              }
+            }
+          },
+          "datasources": [
+            "ds-age-band"
+          ]
+        },
+        {
+          "tile_id": "listeners-by-gender",
+          "title": "Listeners by Gender",
+          "type": "chart",
+          "spec": {
+            "mark": "arc",
+            "encoding": {
+              "theta": {
+                "field": "LISTENERS",
+                "type": "quantitative"
+              },
+              "color": {
+                "field": "GENDER",
+                "type": "nominal"
+              }
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "innerRadius": 0
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-gender"
+          ]
+        },
+        {
+          "tile_id": "listeners-by-traffic",
+          "title": "Listeners by Traffic Source",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "LISTENERS",
+                "type": "quantitative",
+                "title": "Listeners"
+              },
+              "y": {
+                "field": "TRAFFIC_SOURCE",
+                "type": "nominal",
+                "sort": "-x",
+                "title": null
+              }
+            }
+          },
+          "datasources": [
+            "ds-traffic-source"
+          ]
+        },
+        {
+          "tile_id": "top-states",
+          "title": "Top 10 States by Streams",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "STREAMS",
+                "type": "quantitative",
+                "title": "Streams"
+              },
+              "y": {
+                "field": "STATE",
+                "type": "nominal",
+                "sort": "-x",
+                "title": null
+              }
+            }
+          },
+          "datasources": [
+            "ds-top-states"
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": {
+    "STREAM_DATE": {
+      "label": "Stream Date",
+      "mode": "range",
+      "valueType": "DATE",
+      "default_values": []
+    },
+    "GENRE": {
+      "label": "Genre",
+      "mode": "multi_select",
+      "valueType": "STRING",
+      "default_values": [],
+      "options": {
+        "source": "static",
+        "values": [
+          "Business",
+          "Comedy",
+          "Education",
+          "Entertainment",
+          "Health",
+          "History",
+          "Lifestyle",
+          "Music",
+          "News",
+          "Politics",
+          "Science",
+          "Sports",
+          "Technology",
+          "True Crime"
+        ]
+      }
+    },
+    "LISTENING_CONTEXT": {
+      "label": "Listening Context",
+      "mode": "multi_select",
+      "valueType": "STRING",
+      "default_values": [],
+      "options": {
+        "source": "static",
+        "values": [
+          "Afternoon",
+          "Evening Commute",
+          "Evening Wind-Down",
+          "Late Morning",
+          "Late Night",
+          "Lunch Break",
+          "Morning Commute"
+        ]
+      }
+    },
+    "COUNTRY": {
+      "label": "Country",
+      "mode": "multi_select",
+      "valueType": "STRING",
+      "default_values": [],
+      "options": {
+        "source": "static",
+        "values": [
+          "UK",
+          "USA"
+        ]
+      }
+    }
+  },
+  "variables": {
+    "Type": {
+      "label": "Type",
+      "valueType": "STRING",
+      "default_values": [
+        "Sports"
+      ]
+    }
+  },
+  "layout": {
+    "overview": {
+      "meta": {
+        "default": true
+      },
+      "positions": {
+        "kpi-total-streams": {
+          "x": 0,
+          "y": 0,
+          "w": 2,
+          "h": 2
+        },
+        "kpi-unique-listeners": {
+          "x": 2,
+          "y": 0,
+          "w": 2,
+          "h": 2
+        },
+        "kpi-listened-minutes": {
+          "x": 4,
+          "y": 0,
+          "w": 2,
+          "h": 2
+        },
+        "kpi-avg-minutes": {
+          "x": 6,
+          "y": 0,
+          "w": 2,
+          "h": 2
+        },
+        "kpi-completion-rate": {
+          "x": 8,
+          "y": 0,
+          "w": 2,
+          "h": 2
+        },
+        "kpi-download-rate": {
+          "x": 10,
+          "y": 0,
+          "w": 2,
+          "h": 2
+        },
+        "weekly-streams-listeners": {
+          "x": 0,
+          "y": 2,
+          "w": 8,
+          "h": 4
+        },
+        "weekly-minutes": {
+          "x": 8,
+          "y": 2,
+          "w": 4,
+          "h": 4
+        },
+        "streams-by-genre": {
+          "x": 0,
+          "y": 6,
+          "w": 6,
+          "h": 4
+        },
+        "streams-by-context": {
+          "x": 6,
+          "y": 6,
+          "w": 6,
+          "h": 4
+        }
+      }
+    },
+    "content": {
+      "positions": {
+        "podcast-leaderboard": {
+          "x": 0,
+          "y": 0,
+          "w": 7,
+          "h": 5
+        },
+        "rating-vs-subscribers": {
+          "x": 7,
+          "y": 0,
+          "w": 5,
+          "h": 5
+        },
+        "completion-by-genre": {
+          "x": 0,
+          "y": 5,
+          "w": 4,
+          "h": 4
+        },
+        "completion-distribution": {
+          "x": 4,
+          "y": 5,
+          "w": 4,
+          "h": 4
+        },
+        "download-split": {
+          "x": 8,
+          "y": 5,
+          "w": 4,
+          "h": 4
+        }
+      }
+    },
+    "audience": {
+      "positions": {
+        "listeners-by-age": {
+          "x": 0,
+          "y": 0,
+          "w": 6,
+          "h": 4
+        },
+        "listeners-by-gender": {
+          "x": 6,
+          "y": 0,
+          "w": 6,
+          "h": 4
+        },
+        "listeners-by-traffic": {
+          "x": 0,
+          "y": 4,
+          "w": 6,
+          "h": 4
+        },
+        "top-states": {
+          "x": 6,
+          "y": 4,
+          "w": 6,
+          "h": 4
+        }
+      }
+    }
+  },
+  "datasources": {
+    "ds-kpis": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "TOTAL_STREAMS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "UNIQUE_LISTENERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "TOTAL_LISTENED_MINUTES",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_MINUTES_PER_STREAM",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_COMPLETION_RATE",
+          "type": "NUMBER"
+        },
+        {
+          "name": "DOWNLOAD_RATE",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    COUNT(STREAM_ID) AS TOTAL_STREAMS,\n    COUNT(DISTINCT USER_ID) AS UNIQUE_LISTENERS,\n    SUM(LISTENED_MIN) AS TOTAL_LISTENED_MINUTES,\n    AVG(LISTENED_MIN) AS AVG_MINUTES_PER_STREAM,\n    AVG(COMPLETION_PCT) / 100 AS AVG_COMPLETION_RATE,\n    COUNT_IF(DOWNLOADED) / NULLIF(COUNT(STREAM_ID), 0) AS DOWNLOAD_RATE\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-weekly-engagement": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "WEEK",
+          "type": "DATE"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LISTENERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LISTENED_MINUTES",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_COMPLETION_PCT",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    DATE_TRUNC('WEEK', STREAM_DATE)::DATE AS WEEK,\n    COUNT(STREAM_ID) AS STREAMS,\n    COUNT(DISTINCT USER_ID) AS LISTENERS,\n    SUM(LISTENED_MIN) AS LISTENED_MINUTES,\n    AVG(COMPLETION_PCT) AS AVG_COMPLETION_PCT\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    WEEK\nORDER BY\n    WEEK",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-genre-performance": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "GENRE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_COMPLETION_PCT",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LISTENED_MINUTES",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    GENRE,\n    COUNT(STREAM_ID) AS STREAMS,\n    AVG(COMPLETION_PCT) AS AVG_COMPLETION_PCT,\n    SUM(LISTENED_MIN) AS LISTENED_MINUTES\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    GENRE\nORDER BY\n    STREAMS DESC",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-podcast-performance": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "TITLE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "GENRE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LISTENERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_COMPLETION_PCT",
+          "type": "NUMBER"
+        },
+        {
+          "name": "RATING",
+          "type": "NUMBER"
+        },
+        {
+          "name": "SUBSCRIBERS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    TITLE,\n    GENRE,\n    COUNT(STREAM_ID) AS STREAMS,\n    COUNT(DISTINCT USER_ID) AS LISTENERS,\n    ROUND(AVG(COMPLETION_PCT), 1) AS AVG_COMPLETION_PCT,\n    MAX(RATING) AS RATING,\n    MAX(SUBSCRIBER_COUNT) AS SUBSCRIBERS\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    TITLE,\n    GENRE\nORDER BY\n    STREAMS DESC",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-listening-context": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "LISTENING_CONTEXT",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_COMPLETION_PCT",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    LISTENING_CONTEXT,\n    COUNT(STREAM_ID) AS STREAMS,\n    AVG(COMPLETION_PCT) AS AVG_COMPLETION_PCT\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    LISTENING_CONTEXT\nORDER BY\n    STREAMS DESC",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-download-split": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "PLAYBACK_MODE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    IFF(DOWNLOADED, 'Downloaded', 'Streamed') AS PLAYBACK_MODE,\n    COUNT(STREAM_ID) AS STREAMS\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    PLAYBACK_MODE",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-completion-distribution": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "COMPLETION_BUCKET",
+          "type": "NUMBER"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    LEAST(FLOOR(COMPLETION_PCT / 10) * 10, 90) AS COMPLETION_BUCKET,\n    COUNT(STREAM_ID) AS STREAMS\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    COMPLETION_BUCKET\nORDER BY\n    COMPLETION_BUCKET",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-age-band": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "AGE_BAND",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "LISTENERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    CASE WHEN AGE < 25 THEN '1. Under 25' WHEN AGE < 35 THEN '2. 25-34' WHEN AGE < 50 THEN '3. 35-49' ELSE '4. 50+' END AS AGE_BAND,\n    COUNT(DISTINCT USER_ID) AS LISTENERS,\n    COUNT(STREAM_ID) AS STREAMS\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    AGE_BAND\nORDER BY\n    AGE_BAND",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-gender": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "GENDER",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "LISTENERS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    GENDER,\n    COUNT(DISTINCT USER_ID) AS LISTENERS\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    GENDER",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-traffic-source": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "TRAFFIC_SOURCE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "LISTENERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    TRAFFIC_SOURCE,\n    COUNT(DISTINCT USER_ID) AS LISTENERS,\n    COUNT(STREAM_ID) AS STREAMS\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    TRAFFIC_SOURCE\nORDER BY\n    LISTENERS DESC",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    },
+    "ds-top-states": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "STATE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "LISTENERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "STREAMS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH base AS (\n    SELECT\n        s.STREAM_ID,\n        s.USER_ID,\n        s.STARTED_AT::DATE AS STREAM_DATE,\n        s.LISTENED_MIN,\n        s.COMPLETION_PCT,\n        s.DOWNLOADED,\n        s.LISTENING_CONTEXT,\n        p.TITLE,\n        p.GENRE,\n        p.RATING,\n        p.SUBSCRIBER_COUNT,\n        u.AGE,\n        u.GENDER,\n        u.COUNTRY,\n        u.STATE,\n        u.TRAFFIC_SOURCE\n    FROM ANALYTICS_PROD.COCO_DEMO.STREAMS s\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.PODCASTS p\n        ON s.PODCAST_ID = p.PODCAST_ID\n    LEFT JOIN ANALYTICS_PROD.COCO_DEMO.USERS u\n        ON s.USER_ID = u.ID\n)\nSELECT\n    STATE,\n    COUNT(DISTINCT USER_ID) AS LISTENERS,\n    COUNT(STREAM_ID) AS STREAMS\nFROM base\nWHERE\n    {{ filter('STREAM_DATE') }}\n    AND {{ filter('GENRE') }}\n    AND {{ filter('LISTENING_CONTEXT') }}\n    AND {{ filter('COUNTRY') }}\nGROUP BY\n    STATE\nORDER BY\n    STREAMS DESC\nLIMIT 10",
+      "filter_bindings": [
+        {
+          "filter_id": "STREAM_DATE"
+        },
+        {
+          "filter_id": "GENRE"
+        },
+        {
+          "filter_id": "LISTENING_CONTEXT"
+        },
+        {
+          "filter_id": "COUNTRY"
+        }
+      ]
+    }
+  }
+}

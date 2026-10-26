@@ -1,0 +1,115 @@
+{
+  "spec_version": 2,
+  "spec_revision": 13,
+  "version": 2,
+  "title": "Test",
+  "tabs": [
+    {
+      "tab_id": "tab-0",
+      "title": "Overview",
+      "tiles": [
+        {
+          "tile_id": "chart-a12aa1c24a76",
+          "title": "Total Revenue by Created Date (Last 30 Days)",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "scale": {
+                  "type": "utc"
+                },
+                "field": "CREATED_DATE",
+                "type": "temporal",
+                "title": "Created Date"
+              },
+              "y": {
+                "field": "TOTAL_REVENUE",
+                "type": "quantitative",
+                "title": "Total Revenue",
+                "axis": {
+                  "labelExpr": "'$' + (abs(datum.value) >= 1000 ? format(datum.value, '.3~s') : format(datum.value, ',.0f'))"
+                }
+              },
+              "tooltip": [
+                {
+                  "field": "CREATED_DATE",
+                  "title": "Created Date"
+                },
+                {
+                  "field": "TOTAL_REVENUE",
+                  "title": "Total Revenue",
+                  "format": "$,.2f"
+                }
+              ]
+            },
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "title": "",
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "dataLabels": {
+                    "enabled": false
+                  }
+                },
+                "chartType": "stacked-bar"
+              }
+            }
+          },
+          "datasources": [
+            "ds-revenue-by-created-date"
+          ]
+        }
+      ]
+    }
+  ],
+  "filters": {
+    "Status": {
+      "label": "Status",
+      "mode": "single_select",
+      "valueType": "STRING",
+      "options": {
+        "source": "column",
+        "table": "ANALYTICS_PROD.ECOMM.ORDER_ITEMS",
+        "column": "STATUS"
+      },
+      "default_values": [
+        "Complete"
+      ]
+    }
+  },
+  "layout": {
+    "tab-0": {
+      "meta": {
+        "default": true
+      },
+      "positions": {
+        "chart-a12aa1c24a76": {
+          "x": 0,
+          "y": 0,
+          "w": 6,
+          "h": 5
+        }
+      }
+    }
+  },
+  "datasources": {
+    "ds-revenue-by-created-date": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "CREATED_DATE",
+          "type": "DATE"
+        },
+        {
+          "name": "TOTAL_REVENUE",
+          "type": "FLOAT"
+        }
+      ],
+      "sql": "SELECT\n    DATE_TRUNC('DAY', ORDER_ITEMS.CREATED_AT)::DATE AS CREATED_DATE,\n    AGG(ORDER_ITEMS.TOTAL_REVENUE) AS TOTAL_REVENUE\nFROM ANALYTICS_PROD.ECOMM.SALES\nWHERE\n    ORDER_ITEMS.CREATED_AT >= DATEADD('DAY', -30, CURRENT_DATE())\nGROUP BY\n    CREATED_DATE\nORDER BY\n    CREATED_DATE"
+    }
+  }
+}
