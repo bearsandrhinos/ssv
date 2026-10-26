@@ -1,5 +1,7 @@
 name: PODCAST_ANALYTICS
 description: "Podcast analytics model for a podcast company. Tracks listener behavior through streams, podcast catalog metadata, and user demographics. Supports analysis of listening patterns, podcast performance, user engagement, and audience segmentation."
+module_custom_instructions:
+  sql_generation: This is a topic on podcast analytics.
 tables:
   - name: PODCASTS
     description: "Podcast catalog with show-level metadata. Each row represents a single podcast title including genre classification, host, ratings, and subscriber counts."
@@ -22,10 +24,25 @@ tables:
         data_type: "NUMBER(38,0)"
         access_modifier: public_access
       - name: GENRE
-        description: "Primary genre category such as Comedy, News, or Technology"
+        description: "Primary genre category such as Comedy, News, or Technology. This is a cool description"
         expr: GENRE
         data_type: VARCHAR(16777216)
         access_modifier: public_access
+        synonyms:
+          - Category
+          - Podcast Type
+          - Content Genre
+        sample_values:
+          - Business
+          - Comedy
+          - Education
+          - Entertainment
+          - Health
+          - History
+          - Lifestyle
+          - Music
+          - News
+          - Politics
       - name: HOST_NAME
         synonyms:
           - Host
@@ -94,6 +111,9 @@ tables:
         description: Total subscriber count across all podcasts
         expr: SUM(SUBSCRIBER_COUNT)
         access_modifier: public_access
+      - name: rating_max
+        description: '(Max) Rating: Average user rating on a scale of 0 to 5'
+        expr: MAX(RATING)
     time_dimensions:
       - name: LAUNCH_DATE
         description: Date the podcast first published
