@@ -79,6 +79,9 @@ tables:
       - name: avg_user_age
         description: Average age of registered users
         expr: AVG(AGE)
+      - name: id_count_distinct
+        description: '(Count Distinct) ID: Unique user identifier'
+        expr: COUNT(DISTINCT ID)
     description: Registered podcast listeners. Each row represents a single user account with demographic and geographic attributes. Joins to STREAMS to analyze listening behavior by audience segment.
   - name: PODCASTS
     base_table:
@@ -149,8 +152,8 @@ tables:
         description: Average user rating on a scale of 0 to 5
     metrics:
       - name: total_podcasts
-        description: Total number of podcasts in the catalog
-        expr: COUNT(PODCAST_ID)
+        description: Total number of podcasts in the catalog.  I am multipling this by two now
+        expr: COUNT(PODCAST_ID * 2)
       - name: avg_rating
         description: Average podcast rating
         expr: AVG(RATING)
