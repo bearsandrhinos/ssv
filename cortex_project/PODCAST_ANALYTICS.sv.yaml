@@ -112,7 +112,7 @@ tables:
         data_type: BOOLEAN
         access_modifier: public_access
       - name: EPISODE_ID
-        description: Identifier for the specific episode streamed
+        description: Identifier for the specific episode streamed.  This is an ID
         expr: EPISODE_ID
         data_type: VARCHAR(16777216)
         access_modifier: public_access
