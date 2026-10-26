@@ -31,6 +31,10 @@ tables:
         expr: HOST_NAME
         data_type: VARCHAR(16777216)
         access_modifier: public_access
+        synonyms:
+          - Host
+          - Presenter
+          - Podcast Creator
       - name: IS_EXPLICIT
         description: Whether the podcast contains explicit content
         expr: IS_EXPLICIT
@@ -272,7 +276,7 @@ tables:
         access_modifier: public_access
       - name: ID_COUNT_DISTINCT
         description: "(Count Distinct) ID: Unique user identifier"
-        expr: COUNT(DISTINCT CASE WHEN STATE = 'California' THEN ID END)
+        expr: COUNT(DISTINCT CASE WHEN STATE = 'California' THEN ID ELSE NULL END)
         access_modifier: public_access
       - name: TOTAL_USERS
         description: Total number of registered users
