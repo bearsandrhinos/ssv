@@ -24,7 +24,7 @@ tables:
         data_type: "NUMBER(38,0)"
         access_modifier: public_access
       - name: GENRE
-        description: "Primary genre category such as Comedy, News, or Technology. This is a cool description"
+        description: "Primary genre category such as Comedy, News, or Technology"
         expr: GENRE
         data_type: VARCHAR(16777216)
         access_modifier: public_access
