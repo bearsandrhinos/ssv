@@ -1,0 +1,204 @@
+name: SITE_SERVICES
+description: 'Site services analytics: rental assets, customer sites, asset placements,
+  service orders, and service routes.'
+tables:
+- name: USS_ASSETS
+  base_table:
+    database: ANALYTICS_PROD
+    schema: COCO_DEMO
+    table: USS_ASSETS
+  primary_key:
+    columns:
+    - ASSET_ID
+  dimensions:
+  - name: ASSET_ID
+    expr: ASSET_ID
+    data_type: VARCHAR
+  - name: PRODUCT_TYPE
+    expr: PRODUCT_TYPE
+    data_type: VARCHAR
+  - name: HOME_BRANCH_ID
+    expr: HOME_BRANCH_ID
+    data_type: VARCHAR
+  - name: STATUS
+    expr: STATUS
+    data_type: VARCHAR
+  time_dimensions:
+  - name: PURCHASE_DATE
+    expr: PURCHASE_DATE
+    data_type: DATE
+  metrics:
+  - name: ASSET_COUNT
+    expr: COUNT(DISTINCT ASSET_ID)
+    description: Number of distinct assets
+- name: USS_SITES
+  base_table:
+    database: ANALYTICS_PROD
+    schema: COCO_DEMO
+    table: USS_SITES
+  primary_key:
+    columns:
+    - SITE_ID
+  dimensions:
+  - name: SITE_ID
+    expr: SITE_ID
+    data_type: VARCHAR
+  - name: CUSTOMER_ID
+    expr: CUSTOMER_ID
+    data_type: VARCHAR
+  - name: BRANCH_ID
+    expr: BRANCH_ID
+    data_type: VARCHAR
+  - name: INDUSTRY_SEGMENT
+    expr: INDUSTRY_SEGMENT
+    data_type: VARCHAR
+  - name: CITY
+    expr: CITY
+    data_type: VARCHAR
+  - name: STATE
+    expr: STATE
+    data_type: VARCHAR
+  metrics:
+  - name: SITE_COUNT
+    expr: COUNT(DISTINCT SITE_ID)
+    description: Number of distinct customer sites
+- name: USS_PLACEMENTS
+  base_table:
+    database: ANALYTICS_PROD
+    schema: COCO_DEMO
+    table: USS_PLACEMENTS
+  primary_key:
+    columns:
+    - PLACEMENT_ID
+  dimensions:
+  - name: PLACEMENT_ID
+    expr: PLACEMENT_ID
+    data_type: VARCHAR
+  - name: ASSET_ID
+    expr: ASSET_ID
+    data_type: VARCHAR
+  - name: SITE_ID
+    expr: SITE_ID
+    data_type: VARCHAR
+  time_dimensions:
+  - name: DELIVERY_DATE
+    expr: DELIVERY_DATE
+    data_type: DATE
+  - name: PICKUP_DATE
+    expr: PICKUP_DATE
+    data_type: DATE
+  facts:
+  - name: DAYS_ON_RENT
+    expr: DAYS_ON_RENT
+    data_type: NUMBER
+  metrics:
+  - name: PLACEMENT_COUNT
+    expr: COUNT(PLACEMENT_ID)
+  - name: TOTAL_DAYS_ON_RENT
+    expr: SUM(DAYS_ON_RENT)
+  - name: AVG_DAYS_ON_RENT
+    expr: AVG(DAYS_ON_RENT)
+- name: USS_SERVICE_ORDERS
+  base_table:
+    database: ANALYTICS_PROD
+    schema: COCO_DEMO
+    table: USS_SERVICE_ORDERS
+  dimensions:
+  - name: SERVICE_ORDER_ID
+    expr: SERVICE_ORDER_ID
+    data_type: VARCHAR
+  - name: ASSET_ID
+    expr: ASSET_ID
+    data_type: VARCHAR
+  - name: SITE_ID
+    expr: SITE_ID
+    data_type: VARCHAR
+  - name: ROUTE_ID
+    expr: ROUTE_ID
+    data_type: VARCHAR
+  - name: SERVICE_TYPE
+    expr: SERVICE_TYPE
+    data_type: VARCHAR
+  - name: STATUS
+    expr: STATUS
+    data_type: VARCHAR
+  time_dimensions:
+  - name: SCHEDULED_DATE
+    expr: SCHEDULED_DATE
+    data_type: DATE
+  - name: COMPLETED_DATE
+    expr: COMPLETED_DATE
+    data_type: DATE
+  primary_key:
+    columns:
+    - SERVICE_ORDER_ID
+  metrics:
+  - name: SERVICE_ORDER_COUNT
+    expr: COUNT(SERVICE_ORDER_ID)
+  - name: COMPLETED_SERVICE_ORDER_COUNT
+    expr: COUNT_IF(COMPLETED_DATE IS NOT NULL)
+  - name: AVG_DAYS_TO_COMPLETE
+    expr: AVG(DATEDIFF(day, SCHEDULED_DATE, COMPLETED_DATE))
+    description: Average days from scheduled to completed
+- name: USS_ROUTES
+  base_table:
+    database: ANALYTICS_PROD
+    schema: COCO_DEMO
+    table: USS_ROUTES
+  primary_key:
+    columns:
+    - ROUTE_ID
+  dimensions:
+  - name: ROUTE_ID
+    expr: ROUTE_ID
+    data_type: VARCHAR
+  - name: DRIVER_ID
+    expr: DRIVER_ID
+    data_type: VARCHAR
+  - name: BRANCH_ID
+    expr: BRANCH_ID
+    data_type: VARCHAR
+  time_dimensions:
+  - name: ROUTE_DATE
+    expr: ROUTE_DATE
+    data_type: DATE
+  facts:
+  - name: PLANNED_STOPS
+    expr: PLANNED_STOPS
+    data_type: NUMBER
+  metrics:
+  - name: ROUTE_COUNT
+    expr: COUNT(ROUTE_ID)
+  - name: TOTAL_PLANNED_STOPS
+    expr: SUM(PLANNED_STOPS)
+relationships:
+- name: PLACEMENTS_TO_ASSETS
+  left_table: USS_PLACEMENTS
+  right_table: USS_ASSETS
+  relationship_columns:
+  - left_column: ASSET_ID
+    right_column: ASSET_ID
+- name: PLACEMENTS_TO_SITES
+  left_table: USS_PLACEMENTS
+  right_table: USS_SITES
+  relationship_columns:
+  - left_column: SITE_ID
+    right_column: SITE_ID
+- name: SERVICE_ORDERS_TO_ASSETS
+  left_table: USS_SERVICE_ORDERS
+  right_table: USS_ASSETS
+  relationship_columns:
+  - left_column: ASSET_ID
+    right_column: ASSET_ID
+- name: SERVICE_ORDERS_TO_SITES
+  left_table: USS_SERVICE_ORDERS
+  right_table: USS_SITES
+  relationship_columns:
+  - left_column: SITE_ID
+    right_column: SITE_ID
+- name: SERVICE_ORDERS_TO_ROUTES
+  left_table: USS_SERVICE_ORDERS
+  right_table: USS_ROUTES
+  relationship_columns:
+  - left_column: ROUTE_ID
+    right_column: ROUTE_ID

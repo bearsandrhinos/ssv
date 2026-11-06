@@ -5,3 +5,13 @@ artifacts:
     targets:
       default:
         object: ANALYTICS_PROD.COCO_DEMO.PODCAST_ANALYTICS
+  - path: SITE_SERVICES.sv.yaml
+    type: semantic_view
+    targets:
+      default:
+        object: ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES
+  - path: SALES.sv.yaml
+    type: semantic_view
+    targets:
+      default:
+        object: ANALYTICS_PROD.ECOMM.SALES

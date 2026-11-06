@@ -1,0 +1,343 @@
+
+Q
+	README.mdOur snowflake ssv repo!
+*
+€»ÿÖ 0d314ed2312ebf65474b7fc3e2d86954
+Ä[
+(cortex_project/PODCAST_ANALYTICS.sv.yamlëZname: PODCAST_ANALYTICS
+description: "Podcast analytics model for a podcast company. Tracks listener behavior through streams, podcast catalog metadata, and user demographics. Supports analysis of listening patterns, podcast performance, user engagement, and audience segmentation."
+module_custom_instructions:
+  sql_generation: This is a topic on podcast analytics.
+tables:
+  - name: PODCASTS
+    description: "Podcast catalog with show-level metadata. Each row represents a single podcast title including genre classification, host, ratings, and subscriber counts."
+    base_table:
+      database: ANALYTICS_PROD
+      schema: COCO_DEMO
+      table: PODCASTS
+    primary_key:
+      columns:
+        - PODCAST_ID
+    dimensions:
+      - name: AVG_EPISODE_LENGTH_MIN
+        description: Average episode duration in minutes
+        expr: AVG_EPISODE_LENGTH_MIN
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: EPISODE_COUNT
+        description: Total number of episodes published
+        expr: EPISODE_COUNT
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: GENRE
+        description: "Primary genre category such as Comedy, News, or Technology. This is a cool description"
+        expr: GENRE
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+        synonyms:
+          - Category
+          - Podcast Type
+          - Content Genre
+        sample_values:
+          - Business
+          - Comedy
+          - Education
+          - Entertainment
+          - Health
+          - History
+          - Lifestyle
+          - Music
+          - News
+          - Politics
+      - name: HOST_NAME
+        synonyms:
+          - Host
+          - Presenter
+          - Podcast Creator
+        description: Name of the podcast host
+        expr: HOST_NAME
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+      - name: IS_EXPLICIT
+        description: Whether the podcast contains explicit content
+        expr: IS_EXPLICIT
+        data_type: BOOLEAN
+        access_modifier: public_access
+      - name: LANGUAGE
+        description: Language the podcast is produced in
+        expr: LANGUAGE
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+      - name: NETWORK
+        description: Podcast network or distribution partner
+        expr: NETWORK
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+      - name: PODCAST_ID
+        description: Unique podcast identifier
+        expr: PODCAST_ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: STATUS
+        description: Current podcast status such as Active or Inactive
+        expr: STATUS
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+      - name: SUBSCRIBER_COUNT
+        description: Number of subscribers to this podcast
+        expr: SUBSCRIBER_COUNT
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: SUB_GENRE
+        description: More specific genre classification within the primary genre
+        expr: SUB_GENRE
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+      - name: TITLE
+        description: Podcast show title
+        expr: TITLE
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+    facts:
+      - name: RATING
+        description: Average user rating on a scale of 0 to 5
+        expr: RATING
+        data_type: "NUMBER(2,1)"
+        access_modifier: public_access
+    metrics:
+      - name: AVG_RATING
+        description: Average podcast rating
+        expr: AVG(RATING)
+        access_modifier: public_access
+      - name: TOTAL_PODCASTS
+        description: Total number of podcasts in the catalog.  I am multipling this by two now
+        expr: COUNT(PODCAST_ID)
+        access_modifier: public_access
+      - name: TOTAL_SUBSCRIBERS
+        description: Total subscriber count across all podcasts
+        expr: SUM(SUBSCRIBER_COUNT)
+        access_modifier: public_access
+      - name: rating_max
+        description: '(Max) Rating: Average user rating on a scale of 0 to 5'
+        expr: MAX(RATING)
+    time_dimensions:
+      - name: LAUNCH_DATE
+        description: Date the podcast first published
+        expr: LAUNCH_DATE
+        data_type: DATE
+        access_modifier: public_access
+  - name: STREAMS
+    description: "Individual podcast listening events. Each row represents one stream session capturing what was played, how long the listener engaged, and in what context. This is the primary fact table for engagement analytics."
+    base_table:
+      database: ANALYTICS_PROD
+      schema: COCO_DEMO
+      table: STREAMS
+    primary_key:
+      columns:
+        - STREAM_ID
+    dimensions:
+      - name: DOWNLOADED
+        description: Whether the episode was downloaded for offline listening
+        expr: DOWNLOADED
+        data_type: BOOLEAN
+        access_modifier: public_access
+      - name: EPISODE_ID
+        description: Identifier for the specific episode streamed.  This is an ID
+        expr: EPISODE_ID
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+      - name: EPISODE_LENGTH_MIN
+        description: Full duration of the episode in minutes
+        expr: EPISODE_LENGTH_MIN
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: LISTENING_CONTEXT
+        description: "Context in which the stream occurred such as commute, workout, or home"
+        expr: LISTENING_CONTEXT
+        data_type: VARCHAR(17)
+        access_modifier: public_access
+      - name: PODCAST_ID
+        description: Foreign key to the podcast being streamed
+        expr: PODCAST_ID
+        data_type: "NUMBER(2,0)"
+        access_modifier: public_access
+      - name: PODCAST_TITLE
+        description: Denormalized podcast title at time of stream
+        expr: PODCAST_TITLE
+        data_type: VARCHAR(16777216)
+        access_modifier: public_access
+      - name: STREAM_ID
+        description: Unique identifier for each stream event
+        expr: STREAM_ID
+        data_type: "NUMBER(18,0)"
+        access_modifier: public_access
+      - name: USER_ID
+        description: Foreign key to the listener who initiated the stream
+        expr: USER_ID
+        data_type: "NUMBER(3,0)"
+        access_modifier: public_access
+    facts:
+      - name: COMPLETION_PCT
+        description: "Percentage of the episode that was listened to, from 0 to 100"
+        expr: COMPLETION_PCT
+        data_type: "NUMBER(11,1)"
+        access_modifier: public_access
+      - name: LISTENED_MIN
+        description: Actual minutes the listener engaged with the episode
+        expr: LISTENED_MIN
+        data_type: "NUMBER(38,1)"
+        access_modifier: public_access
+    metrics:
+      - name: AVG_COMPLETION_RATE
+        description: Average episode completion percentage
+        expr: AVG(COMPLETION_PCT)
+        access_modifier: public_access
+      - name: DOWNLOAD_COUNT
+        description: Number of streams that were downloaded for offline listening
+        expr: COUNT_IF(DOWNLOADED)
+        access_modifier: public_access
+      - name: TOTAL_LISTENED_MINUTES
+        description: Total minutes listened across all streams
+        expr: SUM(LISTENED_MIN)
+        access_modifier: public_access
+      - name: TOTAL_STREAMS
+        description: Total number of podcast streams
+        expr: COUNT(STREAM_ID)
+        access_modifier: public_access
+      - name: UNIQUE_LISTENERS
+        description: Number of distinct listeners
+        expr: COUNT(DISTINCT USER_ID)
+        access_modifier: public_access
+    time_dimensions:
+      - name: STARTED_AT
+        description: Timestamp when the stream session began
+        expr: STARTED_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+  - name: USERS
+    description: Registered podcast listeners. Each row represents a single user account with demographic and geographic attributes. Joins to STREAMS to analyze listening behavior by audience segment.
+    base_table:
+      database: ANALYTICS_PROD
+      schema: COCO_DEMO
+      table: USERS
+    primary_key:
+      columns:
+        - ID
+    dimensions:
+      - name: AGE
+        description: User age in years
+        expr: AGE
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: CITY
+        description: City of residence
+        expr: CITY
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: COUNTRY
+        description: Country of residence
+        expr: COUNTRY
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: EMAIL
+        description: User email address
+        expr: EMAIL
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: FIRST_NAME
+        description: User first name
+        expr: FIRST_NAME
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: FULL_NAME
+        description: User full name
+        expr: FIRST_NAME || ' ' || LAST_NAME
+        data_type: VARCHAR(511)
+        access_modifier: public_access
+      - name: GENDER
+        description: User gender
+        expr: GENDER
+        data_type: VARCHAR(30)
+        access_modifier: public_access
+      - name: ID
+        description: Unique user identifier
+        expr: ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: LAST_NAME
+        description: User last name
+        expr: LAST_NAME
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: STATE
+        description: State or province of residence
+        expr: STATE
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: TRAFFIC_SOURCE
+        description: Marketing channel or source through which the user signed up
+        expr: TRAFFIC_SOURCE
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: ZIP
+        description: Postal or ZIP code
+        expr: ZIP
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+    facts:
+      - name: LATITUDE
+        description: Geographic latitude of the user location
+        expr: LATITUDE
+        data_type: FLOAT
+        access_modifier: public_access
+      - name: LONGITUDE
+        description: Geographic longitude of the user location
+        expr: LONGITUDE
+        data_type: FLOAT
+        access_modifier: public_access
+    metrics:
+      - name: AVG_USER_AGE
+        description: Average age of registered users
+        expr: AVG(AGE)
+        access_modifier: public_access
+      - name: ID_COUNT_DISTINCT
+        description: "(Count Distinct) ID: Unique user identifier"
+        expr: COUNT(DISTINCT CASE WHEN STATE = 'California' THEN ID ELSE NULL END)
+        access_modifier: public_access
+      - name: TOTAL_USERS
+        description: Total number of registered users
+        expr: COUNT(ID)
+        access_modifier: public_access
+    time_dimensions:
+      - name: CREATED_AT
+        description: Timestamp when the user account was created
+        expr: CREATED_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+relationships:
+  - name: STREAMS_TO_PODCASTS
+    left_table: STREAMS
+    right_table: PODCASTS
+    relationship_columns:
+      - left_column: PODCAST_ID
+        right_column: PODCAST_ID
+    join_type: left_outer
+  - name: STREAMS_TO_USERS
+    left_table: STREAMS
+    right_table: USERS
+    relationship_columns:
+      - left_column: USER_ID
+        right_column: ID
+    join_type: left_outer
+*
+€»ÿÖ cbfe171efb4c0791b4ab5b6e45351ec0
+ü
+"cortex_project/cortex-project.yaml©version: 1
+artifacts:
+  - path: PODCAST_ANALYTICS.sv.yaml
+    type: semantic_view
+    targets:
+      default:
+        object: ANALYTICS_PROD.COCO_DEMO.PODCAST_ANALYTICS
+*
+€»ÿÖ 279a27d3c3f51ef24085bf015946050a

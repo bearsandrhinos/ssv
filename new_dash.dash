@@ -1,0 +1,1608 @@
+{
+  "spec_version": 2,
+  "spec_revision": 15,
+  "version": 2,
+  "title": "new_dash",
+  "tabs": [
+    {
+      "tab_id": "tab-0",
+      "title": "Sales",
+      "tiles": [
+        {
+          "tile_id": "chart-f0d00c98b101",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "width": 400,
+            "height": 200,
+            "padding": 0,
+            "params": [
+              {
+                "name": "__scorecard_reveal",
+                "value": 1
+              },
+              {
+                "name": "__scorecard_pulse",
+                "value": 0
+              }
+            ],
+            "data": {
+              "name": "values"
+            },
+            "transform": [
+              {
+                "calculate": "(isValid(datum['SUM(SALE_PRICE)']) && isNumber(datum['SUM(SALE_PRICE)'])) ? (abs(datum['SUM(SALE_PRICE)']) >= 1e9 ? format(datum['SUM(SALE_PRICE)'] / 1e9, '.0~f') + 'B' : abs(datum['SUM(SALE_PRICE)']) >= 1e6 ? format(datum['SUM(SALE_PRICE)'] / 1e6, '.0~f') + 'M' : abs(datum['SUM(SALE_PRICE)']) >= 1e3 ? format(datum['SUM(SALE_PRICE)'] / 1e3, '.0~f') + 'K' : format(datum['SUM(SALE_PRICE)'], ',.0~f')) : 'N/A'",
+                "as": "bigNumberText"
+              },
+              {
+                "calculate": "'neutral'",
+                "as": "__toneKey"
+              },
+              {
+                "calculate": "!(isValid(datum['SUM(SALE_PRICE)']) && isNumber(datum['SUM(SALE_PRICE)'])) ? '#5d6a85' : ('#1e252f')",
+                "as": "__numberColor"
+              },
+              {
+                "calculate": "'neutral'",
+                "as": "__chartKey"
+              },
+              {
+                "calculate": "'#3580f2'",
+                "as": "__lineColor"
+              },
+              {
+                "calculate": "'#3580f2'",
+                "as": "__chartColor"
+              }
+            ],
+            "layer": [
+              {
+                "transform": [
+                  {
+                    "window": [
+                      {
+                        "op": "row_number",
+                        "as": "__row"
+                      }
+                    ]
+                  },
+                  {
+                    "filter": "datum.__row == 1"
+                  }
+                ],
+                "mark": {
+                  "type": "text",
+                  "align": "center",
+                  "baseline": "middle",
+                  "fontWeight": "bold",
+                  "fontSize": {
+                    "expr": "width >= 140 ? 40 : (width >= 90 ? 24 : 14)"
+                  },
+                  "limit": {
+                    "expr": "width - 8"
+                  },
+                  "color": {
+                    "expr": "datum['__numberColor']"
+                  }
+                },
+                "encoding": {
+                  "x": {
+                    "value": {
+                      "expr": "width / 2"
+                    }
+                  },
+                  "y": {
+                    "value": {
+                      "expr": "(height + 28) / 2"
+                    }
+                  },
+                  "text": {
+                    "field": "bigNumberText"
+                  }
+                }
+              }
+            ],
+            "config": {
+              "view": {
+                "stroke": null
+              },
+              "mark": {
+                "tooltip": false
+              }
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartConfig": {
+                  "dataLabels": {
+                    "enabled": false
+                  },
+                  "format": {
+                    "abbreviateNumbers": true
+                  }
+                },
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "SUM(SALE_PRICE)",
+                  "labelField": "",
+                  "format": "decimal",
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "prevColumn": "",
+                  "seriesField": "",
+                  "seriesBucketField": "",
+                  "seriesValueField": ""
+                }
+              }
+            },
+            "title": ""
+          },
+          "datasources": [
+            "ds-chart-f0d00c98b101"
+          ]
+        }
+      ]
+    },
+    {
+      "tab_id": "rental-performance",
+      "title": "Rental Performance",
+      "tiles": [
+        {
+          "tile_id": "kpi-assets",
+          "title": "Total Assets",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "ASSETS",
+                  "labelField": "",
+                  "format": "number",
+                  "decimals": 0,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-rental-kpis"
+          ]
+        },
+        {
+          "tile_id": "kpi-utilization",
+          "title": "Fleet Utilization (On Rent)",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "UTILIZATION",
+                  "labelField": "",
+                  "format": "percent",
+                  "decimals": 1,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-rental-kpis"
+          ]
+        },
+        {
+          "tile_id": "kpi-placements",
+          "title": "Placements",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "PLACEMENTS",
+                  "labelField": "",
+                  "format": "number",
+                  "decimals": 0,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-rental-kpis"
+          ]
+        },
+        {
+          "tile_id": "kpi-avg-days-on-rent",
+          "title": "Avg Days on Rent",
+          "type": "chart",
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "AVG_DAYS_ON_RENT",
+                  "labelField": "",
+                  "format": "number",
+                  "decimals": 1,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          },
+          "datasources": [
+            "ds-rental-kpis"
+          ]
+        },
+        {
+          "tile_id": "placements-trend",
+          "title": "Monthly Placements (by Delivery Month)",
+          "type": "chart",
+          "spec": {
+            "mark": {
+              "type": "line",
+              "point": true
+            },
+            "encoding": {
+              "x": {
+                "field": "MONTH",
+                "type": "temporal",
+                "timeUnit": "yearmonth",
+                "title": "Month"
+              },
+              "y": {
+                "field": "PLACEMENTS",
+                "type": "quantitative",
+                "title": "Placements"
+              },
+              "tooltip": [
+                {
+                  "field": "MONTH",
+                  "type": "temporal",
+                  "timeUnit": "yearmonth"
+                },
+                {
+                  "field": "PLACEMENTS",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "AVG_DAYS_ON_RENT",
+                  "type": "quantitative",
+                  "format": ".1f"
+                }
+              ]
+            }
+          },
+          "datasources": [
+            "ds-placements-trend"
+          ]
+        },
+        {
+          "tile_id": "placements-tree",
+          "type": "table",
+          "title": "Placements by Quarter → Month → Week",
+          "datasources": [
+            "ds-placements-tree"
+          ],
+          "spec": {
+            "columns": [
+              {
+                "field": "LEVEL_LABEL",
+                "label": "Delivery Period"
+              },
+              {
+                "field": "PLACEMENTS",
+                "label": "Placements",
+                "format": {
+                  "number": {
+                    "precision": 0,
+                    "thousands_sep": true
+                  }
+                }
+              },
+              {
+                "field": "RENTAL_DAYS",
+                "label": "Rental Days",
+                "format": {
+                  "number": {
+                    "precision": 0,
+                    "thousands_sep": true
+                  }
+                }
+              },
+              {
+                "field": "AVG_DAYS_ON_RENT",
+                "label": "Avg Days on Rent",
+                "format": {
+                  "number": {
+                    "precision": 2,
+                    "thousands_sep": true
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "tile_id": "rental-days-by-product",
+          "title": "Rental Days by Product Type",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "y": {
+                "field": "PRODUCT_TYPE",
+                "type": "nominal",
+                "sort": "-x",
+                "title": "Product"
+              },
+              "x": {
+                "field": "RENTAL_DAYS",
+                "type": "quantitative",
+                "title": "Rental Days"
+              },
+              "tooltip": [
+                {
+                  "field": "PRODUCT_TYPE",
+                  "type": "nominal"
+                },
+                {
+                  "field": "RENTAL_DAYS",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "PLACEMENTS",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "AVG_DAYS_ON_RENT",
+                  "type": "quantitative",
+                  "format": ".1f"
+                }
+              ]
+            }
+          },
+          "datasources": [
+            "ds-product-performance"
+          ]
+        },
+        {
+          "tile_id": "fleet-status-by-product",
+          "title": "Fleet Status by Product Type",
+          "type": "chart",
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "color": {
+                "field": "STATUS",
+                "type": "nominal",
+                "title": "Status"
+              },
+              "x": {
+                "field": "PRODUCT_TYPE",
+                "type": "nominal",
+                "title": "Product"
+              },
+              "y": {
+                "stack": "zero",
+                "field": "ASSETS",
+                "type": "quantitative",
+                "title": "Assets"
+              },
+              "tooltip": [
+                {
+                  "field": "PRODUCT_TYPE",
+                  "type": "nominal"
+                },
+                {
+                  "field": "STATUS",
+                  "type": "nominal"
+                },
+                {
+                  "field": "ASSETS",
+                  "type": "quantitative"
+                }
+              ]
+            },
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "title": "",
+            "usermeta": {
+              "snowflake": {
+                "chartType": "stacked-bar"
+              }
+            }
+          },
+          "datasources": [
+            "ds-fleet-status"
+          ]
+        }
+      ]
+    },
+    {
+      "tab_id": "site-performance",
+      "title": "Site Performance",
+      "tiles": [
+        {
+          "tile_id": "kpi-sites",
+          "type": "chart",
+          "title": "Customer Sites",
+          "datasources": [
+            "ds-site-kpis"
+          ],
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "SITES",
+                  "labelField": "",
+                  "format": "number",
+                  "decimals": 0,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "kpi-service-orders",
+          "type": "chart",
+          "title": "Service Orders",
+          "datasources": [
+            "ds-site-kpis"
+          ],
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "SERVICE_ORDERS",
+                  "labelField": "",
+                  "format": "number",
+                  "decimals": 0,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "kpi-on-time-rate",
+          "type": "chart",
+          "title": "On-Time Completion",
+          "datasources": [
+            "ds-site-kpis"
+          ],
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "ON_TIME_RATE",
+                  "labelField": "",
+                  "format": "percent",
+                  "decimals": 1,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "kpi-late-missed-rate",
+          "type": "chart",
+          "title": "Late or Missed",
+          "datasources": [
+            "ds-site-kpis"
+          ],
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "LATE_MISSED_RATE",
+                  "labelField": "",
+                  "format": "percent",
+                  "decimals": 1,
+                  "abbreviate": false,
+                  "deltaColorMode": "decreasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "top-sites",
+          "type": "table",
+          "title": "Top 25 Sites by Rental Days",
+          "datasources": [
+            "ds-top-sites"
+          ],
+          "spec": {
+            "columns": [
+              {
+                "field": "SITE_ID"
+              },
+              {
+                "field": "CITY"
+              },
+              {
+                "field": "STATE"
+              },
+              {
+                "field": "INDUSTRY_SEGMENT"
+              },
+              {
+                "field": "PLACEMENTS"
+              },
+              {
+                "field": "RENTAL_DAYS"
+              },
+              {
+                "field": "SERVICE_ORDERS"
+              },
+              {
+                "field": "LATE_MISSED_RATE",
+                "format": {
+                  "number": {
+                    "precision": 1,
+                    "style": "percent"
+                  }
+                }
+              }
+            ],
+            "sort": [
+              {
+                "field": "RENTAL_DAYS",
+                "direction": "desc"
+              }
+            ]
+          }
+        },
+        {
+          "tile_id": "rental-days-by-segment",
+          "type": "chart",
+          "title": "Rental Days by Industry Segment",
+          "datasources": [
+            "ds-segment"
+          ],
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "y": {
+                "field": "INDUSTRY_SEGMENT",
+                "type": "nominal",
+                "sort": "-x",
+                "title": "Segment"
+              },
+              "x": {
+                "field": "RENTAL_DAYS",
+                "type": "quantitative",
+                "title": "Rental Days"
+              },
+              "tooltip": [
+                {
+                  "field": "INDUSTRY_SEGMENT",
+                  "type": "nominal"
+                },
+                {
+                  "field": "RENTAL_DAYS",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "SITES",
+                  "type": "quantitative"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tile_id": "late-rate-by-state",
+          "type": "chart",
+          "title": "Late/Missed Service Rate by State",
+          "datasources": [
+            "ds-state-service"
+          ],
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "STATE",
+                "type": "nominal",
+                "sort": "-y",
+                "title": "State"
+              },
+              "y": {
+                "field": "LATE_MISSED_RATE",
+                "type": "quantitative",
+                "axis": {
+                  "format": ".0%"
+                },
+                "title": "Late/Missed Rate"
+              },
+              "tooltip": [
+                {
+                  "field": "STATE",
+                  "type": "nominal"
+                },
+                {
+                  "field": "LATE_MISSED_RATE",
+                  "type": "quantitative",
+                  "format": ".1%"
+                },
+                {
+                  "field": "SERVICE_ORDERS",
+                  "type": "quantitative"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "tab_id": "route-optimization",
+      "title": "Route Optimization",
+      "tiles": [
+        {
+          "tile_id": "kpi-routes",
+          "type": "chart",
+          "title": "Routes Run",
+          "datasources": [
+            "ds-route-kpis"
+          ],
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "ROUTES",
+                  "labelField": "",
+                  "format": "number",
+                  "decimals": 0,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "kpi-stops-per-route",
+          "type": "chart",
+          "title": "Avg Planned Stops / Route",
+          "datasources": [
+            "ds-route-kpis"
+          ],
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "AVG_STOPS_PER_ROUTE",
+                  "labelField": "",
+                  "format": "number",
+                  "decimals": 1,
+                  "abbreviate": false,
+                  "deltaColorMode": "increasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "kpi-light-route-share",
+          "type": "chart",
+          "title": "Light Routes (≤7 Stops)",
+          "datasources": [
+            "ds-route-kpis"
+          ],
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "LIGHT_ROUTE_SHARE",
+                  "labelField": "",
+                  "format": "percent",
+                  "decimals": 1,
+                  "abbreviate": false,
+                  "deltaColorMode": "decreasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "kpi-consolidation-days",
+          "type": "chart",
+          "title": "Branch-Days to Consolidate",
+          "datasources": [
+            "ds-route-kpis"
+          ],
+          "spec": {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "data": {
+              "name": "values"
+            },
+            "usermeta": {
+              "snowflake": {
+                "chartType": "scorecard",
+                "scorecardConfig": {
+                  "currentColumn": "CONSOLIDATION_DAYS",
+                  "labelField": "",
+                  "format": "number",
+                  "decimals": 0,
+                  "abbreviate": false,
+                  "deltaColorMode": "decreasesBetter",
+                  "comparisonMode": "manual",
+                  "comparisonEnabled": false,
+                  "sparklineEnabled": false,
+                  "labelEnabled": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "tile_id": "route-recommendations",
+          "type": "text",
+          "title": "Recommendations",
+          "text": "### Route optimization opportunities\n\nBased on Jan–Jun 2024 data:\n\n- **Consolidate light routes.** 844 of 3,900 routes (22%) had 7 or fewer planned stops, against an average of about 10. On 157 branch-days, a branch ran two or more of these light routes on the same day. Those are the clearest candidates to merge. Start with **BR-010** (21 such days), **BR-004** and **BR-008** (20 each).\n- **Fix reliability at BR-003.** Its late or missed rate is **16.1%**, compared with 10.3% at BR-004. Three of the four drivers with the most late or missed stops (DRV-0022, DRV-0012, DRV-0002) are based there. Review their route sequencing and stop density before adding capacity.\n- **Prioritize restock and pump-out windows.** Restock has the most late stops (144), and pump-out and cleaning have the most missed stops (88 and 87). Schedule these earlier in the route or give them dedicated time windows.\n- **Weekday balance is fine.** Each weekday averages about 10 planned stops per route, so rebalancing across days won't help. Focus on consolidating routes within a day."
+        },
+        {
+          "tile_id": "light-routes-by-branch",
+          "type": "chart",
+          "title": "Light Routes & Consolidation Days by Branch",
+          "datasources": [
+            "ds-branch-routes"
+          ],
+          "spec": {
+            "transform": [
+              {
+                "fold": [
+                  "LIGHT_ROUTES",
+                  "CONSOLIDATION_DAYS"
+                ],
+                "as": [
+                  "MEASURE",
+                  "VALUE"
+                ]
+              }
+            ],
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "BRANCH_ID",
+                "type": "nominal",
+                "title": "Branch"
+              },
+              "xOffset": {
+                "field": "MEASURE",
+                "type": "nominal"
+              },
+              "y": {
+                "field": "VALUE",
+                "type": "quantitative",
+                "title": "Count"
+              },
+              "color": {
+                "field": "MEASURE",
+                "type": "nominal",
+                "title": "Measure"
+              },
+              "tooltip": [
+                {
+                  "field": "BRANCH_ID",
+                  "type": "nominal"
+                },
+                {
+                  "field": "MEASURE",
+                  "type": "nominal"
+                },
+                {
+                  "field": "VALUE",
+                  "type": "quantitative"
+                },
+                {
+                  "field": "AVG_STOPS_PER_ROUTE",
+                  "type": "quantitative",
+                  "format": ".2f"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tile_id": "late-rate-by-branch",
+          "type": "chart",
+          "title": "Late/Missed Rate by Branch",
+          "datasources": [
+            "ds-branch-late"
+          ],
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "BRANCH_ID",
+                "type": "nominal",
+                "sort": "-y",
+                "title": "Branch"
+              },
+              "y": {
+                "field": "LATE_MISSED_RATE",
+                "type": "quantitative",
+                "axis": {
+                  "format": ".0%"
+                },
+                "title": "Late/Missed Rate"
+              },
+              "tooltip": [
+                {
+                  "field": "BRANCH_ID",
+                  "type": "nominal"
+                },
+                {
+                  "field": "LATE_MISSED_RATE",
+                  "type": "quantitative",
+                  "format": ".1%"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tile_id": "late-missed-by-service-type",
+          "type": "chart",
+          "title": "Late & Missed Stops by Service Type",
+          "datasources": [
+            "ds-service-type-status"
+          ],
+          "spec": {
+            "mark": "bar",
+            "encoding": {
+              "x": {
+                "field": "SERVICE_TYPE",
+                "type": "nominal",
+                "title": "Service Type"
+              },
+              "y": {
+                "field": "SERVICE_ORDERS",
+                "type": "quantitative",
+                "stack": "zero",
+                "title": "Service Orders"
+              },
+              "color": {
+                "field": "STATUS",
+                "type": "nominal",
+                "title": "Status"
+              },
+              "tooltip": [
+                {
+                  "field": "SERVICE_TYPE",
+                  "type": "nominal"
+                },
+                {
+                  "field": "STATUS",
+                  "type": "nominal"
+                },
+                {
+                  "field": "SERVICE_ORDERS",
+                  "type": "quantitative"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "tile_id": "driver-performance",
+          "type": "table",
+          "title": "Driver Route Performance (Highest Late/Missed Rate First)",
+          "datasources": [
+            "ds-driver-performance"
+          ],
+          "spec": {
+            "columns": [
+              {
+                "field": "DRIVER_ID"
+              },
+              {
+                "field": "BRANCH_ID"
+              },
+              {
+                "field": "ROUTES"
+              },
+              {
+                "field": "STOPS_PER_ROUTE",
+                "format": {
+                  "number": {
+                    "precision": 1
+                  }
+                }
+              },
+              {
+                "field": "SERVICE_ORDERS"
+              },
+              {
+                "field": "LATE_OR_MISSED"
+              },
+              {
+                "field": "LATE_MISSED_RATE",
+                "format": {
+                  "number": {
+                    "precision": 1,
+                    "style": "percent"
+                  }
+                }
+              }
+            ],
+            "sort": [
+              {
+                "field": "LATE_MISSED_RATE",
+                "direction": "desc"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "filters": {
+    "country": {
+      "label": "country",
+      "mode": "single_select",
+      "valueType": "STRING",
+      "options": {
+        "source": "column",
+        "table": "ANALYTICS_PROD.ECOMM.USERS",
+        "column": "COUNTRY"
+      },
+      "default_values": [
+        "USA"
+      ]
+    }
+  },
+  "layout": {
+    "tab-0": {
+      "meta": {
+        "default": true
+      },
+      "positions": {
+        "chart-f0d00c98b101": {
+          "x": 0,
+          "y": 0,
+          "w": 6,
+          "h": 2
+        }
+      }
+    },
+    "rental-performance": {
+      "positions": {
+        "kpi-assets": {
+          "x": 0,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-utilization": {
+          "x": 3,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-placements": {
+          "x": 6,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-avg-days-on-rent": {
+          "x": 9,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "placements-trend": {
+          "x": 0,
+          "y": 2,
+          "w": 7,
+          "h": 4
+        },
+        "rental-days-by-product": {
+          "x": 0,
+          "y": 6,
+          "w": 6,
+          "h": 4
+        },
+        "fleet-status-by-product": {
+          "x": 6,
+          "y": 6,
+          "w": 6,
+          "h": 4
+        },
+        "placements-tree": {
+          "x": 7,
+          "y": 2,
+          "w": 5,
+          "h": 4
+        }
+      }
+    },
+    "site-performance": {
+      "positions": {
+        "kpi-sites": {
+          "x": 0,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-service-orders": {
+          "x": 3,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-on-time-rate": {
+          "x": 6,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-late-missed-rate": {
+          "x": 9,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "rental-days-by-segment": {
+          "x": 0,
+          "y": 2,
+          "w": 6,
+          "h": 4
+        },
+        "late-rate-by-state": {
+          "x": 6,
+          "y": 2,
+          "w": 6,
+          "h": 4
+        },
+        "top-sites": {
+          "x": 0,
+          "y": 6,
+          "w": 12,
+          "h": 5
+        }
+      }
+    },
+    "route-optimization": {
+      "positions": {
+        "kpi-routes": {
+          "x": 0,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-stops-per-route": {
+          "x": 3,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-light-route-share": {
+          "x": 6,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "kpi-consolidation-days": {
+          "x": 9,
+          "y": 0,
+          "w": 3,
+          "h": 2
+        },
+        "route-recommendations": {
+          "x": 0,
+          "y": 2,
+          "w": 12,
+          "h": 4
+        },
+        "light-routes-by-branch": {
+          "x": 0,
+          "y": 6,
+          "w": 6,
+          "h": 4
+        },
+        "late-rate-by-branch": {
+          "x": 6,
+          "y": 6,
+          "w": 6,
+          "h": 4
+        },
+        "late-missed-by-service-type": {
+          "x": 0,
+          "y": 10,
+          "w": 6,
+          "h": 5
+        },
+        "driver-performance": {
+          "x": 6,
+          "y": 10,
+          "w": 6,
+          "h": 5
+        }
+      }
+    }
+  },
+  "datasources": {
+    "ds-chart-f0d00c98b101": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "SUM(SALE_PRICE)",
+          "type": "FLOAT"
+        }
+      ],
+      "sql": "select sum(sale_price) FROM ANALYTICS_PROD.ECOMM.ORDER_ITEMS",
+      "filter_bindings": []
+    },
+    "ds-rental-kpis": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "ASSETS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "UTILIZATION",
+          "type": "NUMBER"
+        },
+        {
+          "name": "PLACEMENTS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_DAYS_ON_RENT",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    AGG(uss_assets.asset_count) AS ASSETS,\n    COUNT_IF(uss_assets.status = 'on_rent') / AGG(uss_assets.asset_count) AS UTILIZATION,\n    AGG(uss_placements.placement_count) AS PLACEMENTS,\n    AGG(uss_placements.avg_days_on_rent) AS AVG_DAYS_ON_RENT\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES"
+    },
+    "ds-placements-trend": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "MONTH",
+          "type": "DATE"
+        },
+        {
+          "name": "PLACEMENTS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_DAYS_ON_RENT",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    DATE_TRUNC('month', uss_placements.delivery_date) AS MONTH,\n    AGG(uss_placements.placement_count) AS PLACEMENTS,\n    AGG(uss_placements.avg_days_on_rent) AS AVG_DAYS_ON_RENT\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nWHERE\n    uss_placements.delivery_date IS NOT NULL\nGROUP BY\n    DATE_TRUNC('month', uss_placements.delivery_date)\nORDER BY\n    MONTH"
+    },
+    "ds-product-performance": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "PRODUCT_TYPE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "PLACEMENTS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "RENTAL_DAYS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_DAYS_ON_RENT",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    uss_assets.product_type AS PRODUCT_TYPE,\n    AGG(uss_placements.placement_count) AS PLACEMENTS,\n    AGG(uss_placements.total_days_on_rent) AS RENTAL_DAYS,\n    AGG(uss_placements.avg_days_on_rent) AS AVG_DAYS_ON_RENT\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nGROUP BY\n    uss_assets.product_type\nORDER BY\n    RENTAL_DAYS DESC"
+    },
+    "ds-fleet-status": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "PRODUCT_TYPE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "STATUS",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ASSETS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    uss_assets.product_type AS PRODUCT_TYPE,\n    uss_assets.status AS STATUS,\n    AGG(uss_assets.asset_count) AS ASSETS\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nGROUP BY\n    uss_assets.product_type,\n    uss_assets.status"
+    },
+    "ds-site-kpis": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "SITES",
+          "type": "NUMBER"
+        },
+        {
+          "name": "SERVICE_ORDERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "ON_TIME_RATE",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LATE_MISSED_RATE",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    AGG(uss_sites.site_count) AS SITES,\n    AGG(uss_service_orders.service_order_count) AS SERVICE_ORDERS,\n    COUNT_IF(uss_service_orders.status = 'completed') / AGG(uss_service_orders.service_order_count) AS ON_TIME_RATE,\n    COUNT_IF(uss_service_orders.status IN ('late', 'missed')) / AGG(uss_service_orders.service_order_count) AS LATE_MISSED_RATE\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES"
+    },
+    "ds-top-sites": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "SITE_ID",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "CITY",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "STATE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "INDUSTRY_SEGMENT",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "PLACEMENTS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "RENTAL_DAYS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "SERVICE_ORDERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LATE_MISSED_RATE",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    uss_sites.site_id AS SITE_ID,\n    uss_sites.city AS CITY,\n    uss_sites.state AS STATE,\n    uss_sites.industry_segment AS INDUSTRY_SEGMENT,\n    AGG(uss_placements.placement_count) AS PLACEMENTS,\n    AGG(uss_placements.total_days_on_rent) AS RENTAL_DAYS,\n    AGG(uss_service_orders.service_order_count) AS SERVICE_ORDERS,\n    COUNT_IF(uss_service_orders.status IN ('late', 'missed')) / NULLIF(AGG(uss_service_orders.service_order_count), 0) AS LATE_MISSED_RATE\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nGROUP BY\n    uss_sites.site_id,\n    uss_sites.city,\n    uss_sites.state,\n    uss_sites.industry_segment\nORDER BY\n    RENTAL_DAYS DESC NULLS LAST\nLIMIT 25"
+    },
+    "ds-segment": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "INDUSTRY_SEGMENT",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "SITES",
+          "type": "NUMBER"
+        },
+        {
+          "name": "RENTAL_DAYS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    uss_sites.industry_segment AS INDUSTRY_SEGMENT,\n    AGG(uss_sites.site_count) AS SITES,\n    AGG(uss_placements.total_days_on_rent) AS RENTAL_DAYS\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nGROUP BY\n    uss_sites.industry_segment\nORDER BY\n    RENTAL_DAYS DESC"
+    },
+    "ds-state-service": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "STATE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "SERVICE_ORDERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LATE_MISSED_RATE",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    uss_sites.state AS STATE,\n    AGG(uss_service_orders.service_order_count) AS SERVICE_ORDERS,\n    COUNT_IF(uss_service_orders.status IN ('late', 'missed')) / AGG(uss_service_orders.service_order_count) AS LATE_MISSED_RATE\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nGROUP BY\n    uss_sites.state\nORDER BY\n    LATE_MISSED_RATE DESC"
+    },
+    "ds-route-kpis": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "ROUTES",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_STOPS_PER_ROUTE",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LIGHT_ROUTE_SHARE",
+          "type": "NUMBER"
+        },
+        {
+          "name": "CONSOLIDATION_DAYS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH routes AS (\n    SELECT\n        uss_routes.route_id AS ROUTE_ID,\n        uss_routes.branch_id AS BRANCH_ID,\n        uss_routes.route_date AS ROUTE_DATE,\n        AGG(uss_routes.total_planned_stops) AS STOPS\n    FROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\n    GROUP BY\n        uss_routes.route_id,\n        uss_routes.branch_id,\n        uss_routes.route_date\n),\nbranch_days AS (\n    SELECT\n        BRANCH_ID,\n        ROUTE_DATE,\n        COUNT_IF(STOPS <= 7) AS LIGHT_ROUTES\n    FROM routes\n    GROUP BY\n        BRANCH_ID,\n        ROUTE_DATE\n)\nSELECT\n    (SELECT COUNT(*) FROM routes) AS ROUTES,\n    (SELECT AVG(STOPS) FROM routes) AS AVG_STOPS_PER_ROUTE,\n    (SELECT COUNT_IF(STOPS <= 7) / COUNT(*) FROM routes) AS LIGHT_ROUTE_SHARE,\n    (SELECT COUNT_IF(LIGHT_ROUTES >= 2) FROM branch_days) AS CONSOLIDATION_DAYS"
+    },
+    "ds-branch-routes": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "BRANCH_ID",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "LIGHT_ROUTES",
+          "type": "NUMBER"
+        },
+        {
+          "name": "CONSOLIDATION_DAYS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_STOPS_PER_ROUTE",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "WITH routes AS (\n    SELECT\n        uss_routes.route_id AS ROUTE_ID,\n        uss_routes.branch_id AS BRANCH_ID,\n        uss_routes.route_date AS ROUTE_DATE,\n        AGG(uss_routes.total_planned_stops) AS STOPS\n    FROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\n    GROUP BY\n        uss_routes.route_id,\n        uss_routes.branch_id,\n        uss_routes.route_date\n),\nbranch_days AS (\n    SELECT\n        BRANCH_ID,\n        ROUTE_DATE,\n        COUNT(*) AS ROUTES,\n        SUM(STOPS) AS STOPS,\n        COUNT_IF(STOPS <= 7) AS LIGHT_ROUTES\n    FROM routes\n    GROUP BY\n        BRANCH_ID,\n        ROUTE_DATE\n)\nSELECT\n    BRANCH_ID,\n    SUM(LIGHT_ROUTES) AS LIGHT_ROUTES,\n    COUNT_IF(LIGHT_ROUTES >= 2) AS CONSOLIDATION_DAYS,\n    SUM(STOPS) / SUM(ROUTES) AS AVG_STOPS_PER_ROUTE\nFROM branch_days\nGROUP BY\n    BRANCH_ID\nORDER BY\n    LIGHT_ROUTES DESC"
+    },
+    "ds-branch-late": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "BRANCH_ID",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "LATE_MISSED_RATE",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    uss_routes.branch_id AS BRANCH_ID,\n    COUNT_IF(uss_service_orders.status IN ('late', 'missed')) / AGG(uss_service_orders.service_order_count) AS LATE_MISSED_RATE\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nGROUP BY\n    uss_routes.branch_id\nORDER BY\n    LATE_MISSED_RATE DESC"
+    },
+    "ds-driver-performance": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "DRIVER_ID",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "BRANCH_ID",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "ROUTES",
+          "type": "NUMBER"
+        },
+        {
+          "name": "STOPS_PER_ROUTE",
+          "type": "NUMBER"
+        },
+        {
+          "name": "SERVICE_ORDERS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LATE_OR_MISSED",
+          "type": "NUMBER"
+        },
+        {
+          "name": "LATE_MISSED_RATE",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    uss_routes.driver_id AS DRIVER_ID,\n    uss_routes.branch_id AS BRANCH_ID,\n    AGG(uss_routes.route_count) AS ROUTES,\n    AGG(uss_routes.total_planned_stops) / AGG(uss_routes.route_count) AS STOPS_PER_ROUTE,\n    AGG(uss_service_orders.service_order_count) AS SERVICE_ORDERS,\n    COUNT_IF(uss_service_orders.status IN ('late', 'missed')) AS LATE_OR_MISSED,\n    COUNT_IF(uss_service_orders.status IN ('late', 'missed')) / AGG(uss_service_orders.service_order_count) AS LATE_MISSED_RATE\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nGROUP BY\n    uss_routes.driver_id,\n    uss_routes.branch_id\nORDER BY\n    LATE_MISSED_RATE DESC"
+    },
+    "ds-service-type-status": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "SERVICE_TYPE",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "STATUS",
+          "type": "VARCHAR"
+        },
+        {
+          "name": "SERVICE_ORDERS",
+          "type": "NUMBER"
+        }
+      ],
+      "sql": "SELECT\n    uss_service_orders.service_type AS SERVICE_TYPE,\n    uss_service_orders.status AS STATUS,\n    AGG(uss_service_orders.service_order_count) AS SERVICE_ORDERS\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nWHERE\n    uss_service_orders.status IN ('late', 'missed')\nGROUP BY\n    uss_service_orders.service_type,\n    uss_service_orders.status"
+    },
+    "ds-placements-tree": {
+      "type": "sql",
+      "columns": [
+        {
+          "name": "PLACEMENTS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "RENTAL_DAYS",
+          "type": "NUMBER"
+        },
+        {
+          "name": "AVG_DAYS_ON_RENT",
+          "type": "NUMBER"
+        }
+      ],
+      "hierarchy_bindings": [
+        {
+          "hierarchy_id": "delivery_time"
+        }
+      ],
+      "sql": "SELECT\n    {{ hierarchy_key('delivery_time') }},\n    AGG(uss_placements.placement_count) AS PLACEMENTS,\n    AGG(uss_placements.total_days_on_rent) AS RENTAL_DAYS,\n    AGG(uss_placements.avg_days_on_rent) AS AVG_DAYS_ON_RENT\nFROM ANALYTICS_PROD.COCO_DEMO.SITE_SERVICES\nWHERE\n    uss_placements.delivery_date IS NOT NULL\n    AND {{ hierarchy_rows('delivery_time') }}\nGROUP BY\n    {{ hierarchy_key('delivery_time') }}\nORDER BY\n    1"
+    }
+  },
+  "siArtifactId": "1a7d9b86-b397-44b5-9d65-7190f0c55aed",
+  "siArtifactIdempotencyKey": "2d467545-3cb4-404f-b2c6-499098945c07",
+  "hierarchies": {
+    "delivery_time": {
+      "label": "Delivery date",
+      "all_member": {
+        "label": "All time"
+      },
+      "levels": [
+        {
+          "id": "quarter",
+          "label": "Quarter",
+          "key": {
+            "expr": "DATE_TRUNC('QUARTER', uss_placements.delivery_date)::DATE",
+            "type": "DATE"
+          },
+          "display": "TO_CHAR(uss_placements.delivery_date, 'YYYY') || '-Q' || QUARTER(uss_placements.delivery_date)",
+          "group_by": [
+            "DATE_TRUNC('QUARTER', uss_placements.delivery_date)::DATE",
+            "TO_CHAR(uss_placements.delivery_date, 'YYYY') || '-Q' || QUARTER(uss_placements.delivery_date)"
+          ]
+        },
+        {
+          "id": "month",
+          "label": "Month",
+          "key": {
+            "expr": "DATE_TRUNC('MONTH', uss_placements.delivery_date)::DATE",
+            "type": "DATE"
+          },
+          "display": "TO_CHAR(uss_placements.delivery_date, 'YYYY-MM')",
+          "group_by": [
+            "DATE_TRUNC('MONTH', uss_placements.delivery_date)::DATE",
+            "TO_CHAR(uss_placements.delivery_date, 'YYYY-MM')"
+          ]
+        },
+        {
+          "id": "week",
+          "label": "Week",
+          "key": {
+            "expr": "GREATEST(DATE_TRUNC('WEEK', uss_placements.delivery_date), DATE_TRUNC('MONTH', uss_placements.delivery_date))::DATE",
+            "type": "DATE"
+          },
+          "display": "'Week of ' || TO_CHAR(GREATEST(DATE_TRUNC('WEEK', uss_placements.delivery_date), DATE_TRUNC('MONTH', uss_placements.delivery_date))::DATE, 'YYYY-MM-DD')",
+          "group_by": [
+            "GREATEST(DATE_TRUNC('WEEK', uss_placements.delivery_date), DATE_TRUNC('MONTH', uss_placements.delivery_date))::DATE",
+            "'Week of ' || TO_CHAR(GREATEST(DATE_TRUNC('WEEK', uss_placements.delivery_date), DATE_TRUNC('MONTH', uss_placements.delivery_date))::DATE, 'YYYY-MM-DD')"
+          ]
+        }
+      ]
+    }
+  }
+}

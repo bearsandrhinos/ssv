@@ -1,0 +1,752 @@
+name: SALES
+description: This is a descripotion
+tables:
+  - name: INVENTORY_ITEMS
+    base_table:
+      database: ANALYTICS_PROD
+      schema: ECOMM
+      table: INVENTORY_ITEMS
+    primary_key:
+      columns:
+        - ID
+    dimensions:
+      - name: CREATED_AT
+        synonyms:
+          - inventory date
+          - received date
+          - stock date
+        description: "Timestamp when the inventory item was added to the system, useful for inventory aging and turnover analysis."
+        expr: CREATED_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+      - name: PRODUCT_BRAND
+        synonyms:
+          - brand name
+          - label
+          - make
+          - manufacturer
+        description: "The brand or manufacturer name of the product (e.g., Nike, Apple, Levi's). Key dimension for brand performance analysis."
+        expr: PRODUCT_BRAND
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: PRODUCT_CATEGORY
+        synonyms:
+          - category
+          - item category
+          - merchandise category
+          - product type
+        description: "The product category classification (e.g., Jeans, Sweaters, Accessories). Used for category-level sales and inventory analysis."
+        expr: PRODUCT_CATEGORY
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: PRODUCT_DEPARTMENT
+        synonyms:
+          - business unit
+          - department
+          - division
+          - section
+        description: "The high-level department the product belongs to (e.g., Men, Women, Kids). Primary dimension for departmental performance reporting."
+        expr: PRODUCT_DEPARTMENT
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: PRODUCT_NAME
+        synonyms:
+          - item name
+          - product description
+          - product title
+          - sku name
+        description: "The full descriptive name of the product including brand, style, and key attributes."
+        expr: PRODUCT_NAME
+        data_type: VARCHAR(1024)
+        access_modifier: public_access
+      - name: PRODUCT_SKU
+        synonyms:
+          - item number
+          - product code
+          - sku
+          - stock code
+          - upc
+        description: The unique Stock Keeping Unit identifier for inventory tracking and management.
+        expr: PRODUCT_SKU
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: SOLD_AT
+        synonyms:
+          - inventory sold date
+          - sale date
+          - sold date
+        description: "Timestamp when this specific inventory item was sold, enabling inventory velocity and turnover calculations."
+        expr: SOLD_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+    facts:
+      - name: COST
+        synonyms:
+          - cogs
+          - inventory cost
+          - item cost
+          - unit cost
+        description: "The wholesale cost paid to acquire this specific inventory item from the supplier, used for calculating profit margins and cost of goods sold (COGS)."
+        expr: COST
+        data_type: FLOAT
+        access_modifier: public_access
+      - name: ID
+        expr: ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: PRODUCT_DISTRIBUTION_CENTER_ID
+        synonyms:
+          - dc id
+          - fulfillment center
+          - warehouse id
+        description: Identifier for the distribution center or warehouse where this inventory item is stored and shipped from.
+        expr: PRODUCT_DISTRIBUTION_CENTER_ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: PRODUCT_ID
+        expr: PRODUCT_ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: PRODUCT_RETAIL_PRICE
+        synonyms:
+          - list price
+          - msrp
+          - sticker price
+        description: "The manufacturer suggested retail price (MSRP) for the product, representing the recommended selling price before any discounts."
+        expr: PRODUCT_RETAIL_PRICE
+        data_type: FLOAT
+        access_modifier: public_access
+    metrics:
+      - name: AVERAGE_COST
+        synonyms:
+          - avg cost
+          - mean cost
+          - unit cost average
+        description: "Average cost per item sold, useful for cost trend analysis and margin planning."
+        expr: AVG(COST)
+        access_modifier: public_access
+      - name: MAX_COST
+        expr: MAX(COST)
+        access_modifier: public_access
+      - name: TOTAL_COST
+        synonyms:
+          - cogs
+          - cost of goods sold
+          - direct costs
+          - total cost of sales
+          - total expense
+        description: "Total cost of goods sold (COGS), representing the direct costs of inventory sold. Essential for profitability analysis."
+        expr: SUM(COST)
+        access_modifier: public_access
+  - name: ORDER_ITEMS
+    base_table:
+      database: ANALYTICS_PROD
+      schema: ECOMM
+      table: ORDER_ITEMS
+    unique_keys:
+      - columns:
+          - USER_ID
+    dimensions:
+      - name: CREATED_AT
+        synonyms:
+          - order date
+          - order timestamp
+          - purchase date
+          - transaction date
+        description: "Timestamp when the order was placed. Primary time dimension for sales trends, seasonality, and cohort analysis."
+        expr: CREATED_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+      - name: DELIVERED_AT
+        synonyms:
+          - arrival date
+          - delivery date
+          - received date
+        description: "Timestamp when the order was delivered to the customer, used for delivery time analysis."
+        expr: DELIVERED_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+      - name: IS_DELIVERED
+        synonyms:
+          - delivered
+          - delivery confirmed
+          - received by customer
+        description: Boolean flag indicating whether the order has been successfully delivered to the customer.
+        expr: IS_DELIVERED
+        data_type: BOOLEAN
+        access_modifier: public_access
+      - name: IS_RETURNED
+        synonyms:
+          - refunded
+          - returned
+          - sent back
+        description: Boolean flag indicating whether the customer returned this item. Critical for return rate analysis and quality insights.
+        expr: IS_RETURNED
+        data_type: BOOLEAN
+        access_modifier: public_access
+      - name: IS_SHIPPED
+        synonyms:
+          - dispatched
+          - in transit
+          - shipped
+        description: Boolean flag indicating whether the order has been shipped from the fulfillment center.
+        expr: IS_SHIPPED
+        data_type: BOOLEAN
+        access_modifier: public_access
+      - name: RETURNED_AT
+        synonyms:
+          - refund date
+          - return date
+        description: "Timestamp when the item was returned, if applicable. Used for return timing and seasonal return pattern analysis."
+        expr: RETURNED_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+      - name: SHIPPED_AT
+        synonyms:
+          - dispatch date
+          - ship date
+          - shipment date
+        description: "Timestamp when the order was shipped from the warehouse, used for fulfillment speed analysis."
+        expr: SHIPPED_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+      - name: STATUS
+        synonyms:
+          - fulfillment status
+          - order state
+          - order status
+          - transaction status
+        description: "Current status of the order: Processing, Shipped, Complete, Cancelled, or Returned. Essential for order funnel and fulfillment analysis."
+        expr: STATUS
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+        sample_values:
+          - Processing
+          - Complete
+          - Cancelled
+    facts:
+      - name: COMPLETED_ORDER
+        expr: CASE WHEN order_items.status = 'Complete' THEN 1 else 0 END
+        data_type: "NUMBER(1,0)"
+        access_modifier: public_access
+      - name: COMPLETED_ORDERS
+        expr: Status = 'Complete'
+        data_type: BOOLEAN
+        access_modifier: public_access
+        labels:
+          - filter
+      - name: ID
+        expr: ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: INVENTORY_ITEM_ID
+        expr: INVENTORY_ITEM_ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: MARGIN
+        synonyms:
+          - earnings
+          - gross profit
+          - item profit
+          - markup
+          - net profit
+          - profit margin
+        description: "The profit earned on this specific item, calculated as sale price minus cost. Positive values indicate profitable sales, negative values indicate losses."
+        expr: MARGIN
+        data_type: FLOAT
+        access_modifier: public_access
+      - name: MONTHS_SINCE_SIGNUP
+        synonyms:
+          - account age
+          - customer tenure
+          - loyalty duration
+          - membership length
+          - months as customer
+        description: "Number of months between customer account creation and this order, useful for analyzing customer lifetime value and purchase patterns by tenure."
+        expr: MONTHS_SINCE_SIGNUP
+        data_type: "NUMBER(9,0)"
+        access_modifier: public_access
+      - name: ORDER_ID
+        synonyms:
+          - order number
+          - purchase id
+          - transaction id
+        description: Unique identifier for the order transaction. Multiple items can share the same order_id if purchased together.
+        expr: ORDER_ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: SALE_PRICE
+        synonyms:
+          - amount paid
+          - item revenue
+          - price paid
+          - purchase price
+          - selling price
+          - transaction amount
+        description: "The actual price the customer paid for this item, which may differ from retail price due to discounts, promotions, or dynamic pricing."
+        expr: SALE_PRICE*0.5
+        data_type: FLOAT
+        access_modifier: public_access
+      - name: TIME_TO_SHIP
+        synonyms:
+          - days to ship
+          - fulfillment time
+          - lead time
+          - processing days
+          - shipping time
+        description: "Number of days between order placement and shipment, a key operational metric for fulfillment efficiency and customer satisfaction."
+        expr: TIME_TO_SHIP
+        data_type: "NUMBER(9,0)"
+        access_modifier: public_access
+      - name: USER_ID
+        expr: USER_ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+    metrics:
+      - name: AVERAGE_SALE_PRICE
+        synonyms:
+          - aov
+          - average order value
+          - average transaction
+          - avg price
+          - mean price
+        description: "Average selling price per item, useful for pricing strategy analysis and basket composition insights."
+        expr: AVG(SALE_PRICE)
+        access_modifier: public_access
+      - name: AVG_MARGIN
+        synonyms:
+          - average profit per item
+          - mean margin
+        description: "Average profit margin per item sold, useful for product-level profitability analysis."
+        expr: AVG(MARGIN)
+        access_modifier: public_access
+      - name: AVG_TIME_TO_SHIP
+        synonyms:
+          - average shipping time
+          - avg processing days
+          - mean fulfillment time
+        description: "Average number of days to ship orders, a critical operational KPI for customer satisfaction."
+        expr: AVG(TIME_TO_SHIP)
+        access_modifier: public_access
+      - name: ITEMS_PER_ORDER
+        synonyms:
+          - basket size
+          - items per basket
+          - order size
+          - units per transaction
+        description: "Average number of items per order, a key metric for basket analysis and cross-sell effectiveness."
+        expr: "COUNT(ID) * 1.0 / NULLIF(COUNT(DISTINCT ORDER_ID), 0)"
+        access_modifier: public_access
+      - name: MAX_SALES
+        synonyms:
+          - highest sale
+          - largest order
+          - max transaction
+          - peak sale
+        description: "The highest individual sale price in the dataset, useful for identifying premium purchases and outliers."
+        expr: MAX(SALE_PRICE)
+        access_modifier: public_access
+      - name: MAX_TIME_TO_SHIP
+        synonyms:
+          - longest ship time
+          - max fulfillment delay
+        description: "Maximum shipping time observed, useful for identifying fulfillment bottlenecks."
+        expr: MAX(TIME_TO_SHIP)
+        access_modifier: public_access
+      - name: MIN_SALE_PRICE
+        synonyms:
+          - floor price
+          - lowest sale
+          - minimum price
+        description: "The lowest sale price, useful for identifying deep discounts or promotional pricing."
+        expr: MIN(SALE_PRICE)
+        access_modifier: public_access
+      - name: ORDERS_PER_CUSTOMER
+        synonyms:
+          - order frequency
+          - purchase frequency
+          - transactions per customer
+        description: "Average number of orders per customer, indicating purchase frequency and loyalty."
+        expr: "COUNT(DISTINCT ORDER_ID) * 1.0 / NULLIF(COUNT(DISTINCT USER_ID), 0)"
+        access_modifier: public_access
+      - name: RETURN_COUNT
+        synonyms:
+          - refund count
+          - returned items
+          - returns
+        description: Total number of items returned by customers.
+        expr: SUM(CASE WHEN IS_RETURNED THEN 1 ELSE 0 END)
+        access_modifier: public_access
+      - name: RETURN_RATE
+        synonyms:
+          - refund rate
+          - return percentage
+          - return ratio
+        description: "Percentage of items returned, a key quality and customer satisfaction metric. Industry average is typically 15-30%."
+        expr: "SUM(CASE WHEN IS_RETURNED THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(ID), 0)"
+        access_modifier: public_access
+      - name: REVENUE_PER_CUSTOMER
+        synonyms:
+          - arpu
+          - average revenue per user
+          - customer value
+          - spend per customer
+        description: "Average revenue per unique customer, a proxy for customer value and spending patterns."
+        expr: "SUM(SALE_PRICE) / NULLIF(COUNT(DISTINCT USER_ID), 0)"
+        access_modifier: public_access
+      - name: SEMI_ADDITIVE_SUM
+        expr: SUM(sale_price)
+        access_modifier: public_access
+        non_additive_dimensions:
+          - table: ORDER_ITEMS
+            dimension: CREATED_AT
+            sort_direction: ascending
+            null_order: last
+        using_relationships:
+          - ORDER_ITEMS_TO_USERS
+      - name: TOTAL_CUSTOMERS
+        synonyms:
+          - active customers
+          - customer count
+          - unique buyers
+          - unique customers
+        description: Total number of unique customers who made purchases. Foundation metric for customer analytics.
+        expr: COUNT(DISTINCT USER_ID)
+        access_modifier: public_access
+      - name: TOTAL_ITEMS_SOLD
+        synonyms:
+          - item count
+          - quantity sold
+          - units sold
+          - volume
+        description: Total number of individual items sold across all orders.
+        expr: COUNT(ID)
+        access_modifier: public_access
+      - name: TOTAL_MARGIN
+        synonyms:
+          - aggregate profit
+          - sum of margins
+          - total item profit
+        description: "Sum of individual item margins, providing an alternative profit calculation from pre-computed margin values."
+        expr: SUM(MARGIN)
+        access_modifier: public_access
+      - name: TOTAL_ORDERS
+        synonyms:
+          - number of orders
+          - order count
+          - purchase count
+          - transaction count
+        description: Total number of unique orders/transactions. Key volume metric for business activity.
+        expr: COUNT(DISTINCT ORDER_ID)
+        access_modifier: public_access
+      - name: TOTAL_REVENUE
+        synonyms:
+          - gmv
+          - gross merchandise value
+          - gross revenue
+          - sales volume
+          - total income
+          - total sales
+        description: Total revenue from all sales calculated as the sum of sale prices. The primary top-line metric for business performance.
+        expr: SUM(SALE_PRICE)
+        access_modifier: public_access
+      - name: TOTAL_REVENUE_COMPLETED
+        expr: SUM(SALE_PRICE * completed_order)
+        access_modifier: public_access
+  - name: PRODUCTS
+    base_table:
+      database: ANALYTICS_PROD
+      schema: ECOMM
+      table: PRODUCTS
+    primary_key:
+      columns:
+        - ID
+    dimensions:
+      - name: BRAND
+        synonyms:
+          - label
+          - make
+          - manufacturer
+          - product brand
+        description: Brand name from the product master data. Use for brand-level analytics and competitive analysis.
+        expr: BRAND
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: CATEGORY
+        synonyms:
+          - item type
+          - merchandise type
+          - product category
+        description: Product category from master data for hierarchical category reporting.
+        expr: CATEGORY
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: DEPARTMENT
+        synonyms:
+          - business segment
+          - division
+          - product department
+        description: Department classification from product master for high-level business reporting.
+        expr: DEPARTMENT
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: NAME
+        synonyms:
+          - item name
+          - product name
+          - title
+        description: Product name from master data catalog.
+        expr: NAME
+        data_type: VARCHAR(1024)
+        access_modifier: public_access
+      - name: SKU
+        synonyms:
+          - item code
+          - product code
+          - product sku
+        description: SKU from product master for product-level detail analysis.
+        expr: SKU
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+    facts:
+      - name: COST
+        synonyms:
+          - base cost
+          - product cost
+          - wholesale price
+        description: "The standard cost for this product SKU, used as the baseline for margin calculations and inventory valuation."
+        expr: COST
+        data_type: FLOAT
+        access_modifier: public_access
+      - name: DISTRIBUTION_CENTER_ID
+        expr: DISTRIBUTION_CENTER_ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: ID
+        expr: ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: RETAIL_PRICE
+        synonyms:
+          - full price
+          - list price
+          - msrp
+          - recommended price
+        description: The standard retail price for this product before any discounts or promotions are applied.
+        expr: RETAIL_PRICE
+        data_type: FLOAT
+        access_modifier: public_access
+    metrics:
+      - name: TOTAL_COST
+        synonyms:
+          - merchandise cost
+          - product costs
+        description: "Total product costs from the product master, useful for cost variance analysis."
+        expr: SUM(COST)
+        access_modifier: public_access
+      - name: UNIQUE_BRANDS_SOLD
+        synonyms:
+          - brand count
+          - brand variety
+        description: "Number of unique brands represented in sales, useful for brand portfolio analysis."
+        expr: COUNT(DISTINCT BRAND)
+        access_modifier: public_access
+      - name: UNIQUE_PRODUCTS_SOLD
+        synonyms:
+          - product count
+          - product variety
+          - sku count
+        description: "Number of unique products/SKUs sold, indicating catalog breadth and product diversity."
+        expr: COUNT(DISTINCT PRODUCTS.ID)
+        access_modifier: public_access
+  - name: USERS
+    base_table:
+      database: ANALYTICS_PROD
+      schema: ECOMM
+      table: USERS
+    primary_key:
+      columns:
+        - ID
+    dimensions:
+      - name: CITY
+        synonyms:
+          - customer city
+          - location
+          - market
+          - metro area
+        description: City where the customer is located. Key geographic dimension for regional sales analysis and market planning.
+        expr: CITY
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: COUNTRY
+        synonyms:
+          - customer country
+          - market country
+          - nation
+        description: Country where the customer is located for international market segmentation.
+        expr: COUNTRY
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: CREATED_AT
+        synonyms:
+          - account created
+          - customer since
+          - registration date
+          - signup date
+        description: Timestamp when the customer account was created. Foundation for customer lifetime value and cohort analysis.
+        expr: CREATED_AT
+        data_type: TIMESTAMP_NTZ(9)
+        access_modifier: public_access
+      - name: EMAIL
+        synonyms:
+          - contact email
+          - customer email
+          - email address
+        description: Customer email address for identification and communication analysis.
+        expr: EMAIL
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: FIRST_NAME
+        synonyms:
+          - customer first name
+          - given name
+        description: Customer first name for personalization and identity.
+        expr: FIRST_NAME
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: GENDER
+        synonyms:
+          - customer gender
+          - demographic gender
+          - sex
+        description: Customer gender for demographic segmentation and targeted marketing analysis.
+        expr: GENDER
+        data_type: VARCHAR(30)
+        access_modifier: public_access
+      - name: LAST_NAME
+        synonyms:
+          - customer last name
+          - family name
+          - surname
+        description: Customer last name for identification.
+        expr: LAST_NAME
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: STATE
+        synonyms:
+          - customer state
+          - province
+          - region
+          - territory
+        description: "State or province where the customer is located. Essential for regional performance, tax analysis, and territory management."
+        expr: STATE
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: TRAFFIC_SOURCE
+        synonyms:
+          - acquisition channel
+          - how they found us
+          - marketing channel
+          - referral source
+          - utm source
+        description: "The marketing channel that acquired this customer (e.g., Organic, Facebook, Google, Email). Critical for marketing ROI and attribution analysis."
+        expr: TRAFFIC_SOURCE
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+      - name: ZIP
+        synonyms:
+          - postal code
+          - postcode
+          - zip code
+        description: Customer postal/zip code for micro-geographic analysis and delivery planning.
+        expr: ZIP
+        data_type: VARCHAR(255)
+        access_modifier: public_access
+    facts:
+      - name: AGE
+        synonyms:
+          - customer age
+          - user age
+          - years old
+        description: "The age of the customer in years, useful for demographic segmentation and targeted marketing analysis."
+        expr: AGE
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: ID
+        expr: ID
+        data_type: "NUMBER(38,0)"
+        access_modifier: public_access
+      - name: LATITUDE
+        synonyms:
+          - geo latitude
+          - lat
+        description: Geographic latitude coordinate of the customer location for mapping and regional analysis.
+        expr: LATITUDE
+        data_type: FLOAT
+        access_modifier: public_access
+      - name: LONGITUDE
+        synonyms:
+          - geo longitude
+          - lng
+          - long
+        description: Geographic longitude coordinate of the customer location for mapping and regional analysis.
+        expr: LONGITUDE
+        data_type: FLOAT
+        access_modifier: public_access
+    metrics:
+      - name: AVG_CUSTOMER_AGE
+        synonyms:
+          - average age
+          - demographic age
+          - mean customer age
+        description: Average age of customers for demographic profiling and targeting.
+        expr: AVG(AGE)
+        access_modifier: public_access
+metrics:
+  - name: GROSS_MARGIN_PCT
+    synonyms:
+      - gpm
+      - gross margin rate
+      - margin percentage
+      - profit margin
+    description: "Gross margin as a percentage of revenue, indicating profitability efficiency. Industry benchmark is typically 40-60% for retail."
+    expr: "(ORDER_ITEMS.TOTAL_REVENUE - INVENTORY_ITEMS.TOTAL_COST) / NULLIF(ORDER_ITEMS.TOTAL_REVENUE, 0) * 100"
+    access_modifier: public_access
+  - name: PROFIT
+    synonyms:
+      - contribution margin
+      - gross profit
+      - net revenue
+      - total margin
+    description: Gross profit calculated as total revenue minus cost of goods sold. Key profitability metric for financial performance.
+    expr: ORDER_ITEMS.TOTAL_REVENUE - INVENTORY_ITEMS.TOTAL_COST
+    access_modifier: public_access
+relationships:
+  - name: II_TO_PRODUCTS
+    left_table: INVENTORY_ITEMS
+    right_table: PRODUCTS
+    relationship_columns:
+      - left_column: PRODUCT_ID
+        right_column: ID
+  - name: II_TO_OI
+    left_table: ORDER_ITEMS
+    right_table: INVENTORY_ITEMS
+    relationship_columns:
+      - left_column: INVENTORY_ITEM_ID
+        right_column: ID
+  - name: ORDER_ITEMS_TO_USERS
+    left_table: ORDER_ITEMS
+    right_table: USERS
+    relationship_columns:
+      - left_column: USER_ID
+        right_column: ID
+module_custom_instructions:
+  sql_generation: "When generating SQL: 1) Always round monetary values to 2 decimal places, 2) Round percentages to 1 decimal place, 3) Exclude cancelled and returned orders from revenue calculations unless specifically asked about returns, 4) Use appropriate date truncation for time-based analysis"
+  question_categorization: THis should be mapped to context
+verified_queries:
+  - name: '"What is revenue"'
+    sql: SELECT SUM(SALE_PRICE) FROM ORDER_ITEMS
+    question: What is revenue
+    verified_at: 1790664402
+    verified_by: PETER@OMNI.CO
+    use_as_onboarding_question: false
