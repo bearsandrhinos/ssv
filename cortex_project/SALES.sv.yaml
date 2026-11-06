@@ -138,6 +138,15 @@ tables:
         description: "Total cost of goods sold (COGS), representing the direct costs of inventory sold. Essential for profitability analysis."
         expr: SUM(COST)
         access_modifier: public_access
+      - name: ecomm__sales__inventory_items__total_cost
+        description: Total cost of goods sold (COGS), representing the direct costs of inventory sold. Essential for profitability analysis.
+        synonyms:
+          - cogs
+          - cost of goods sold
+          - direct costs
+          - total cost of sales
+          - total expense
+        expr: SUM(COST)
   - name: ORDER_ITEMS
     base_table:
       database: ANALYTICS_PROD
@@ -226,7 +235,7 @@ tables:
           - Cancelled
     facts:
       - name: COMPLETED_ORDER
-        expr: CASE WHEN order_items.status = 'Complete' THEN 1 else 0 END
+        expr: CASE WHEN STATUS = 'Complete' THEN 1 ELSE 0 END
         data_type: "NUMBER(1,0)"
         access_modifier: public_access
       - name: COMPLETED_ORDERS
@@ -284,7 +293,7 @@ tables:
           - selling price
           - transaction amount
         description: "The actual price the customer paid for this item, which may differ from retail price due to discounts, promotions, or dynamic pricing."
-        expr: SALE_PRICE*0.5
+        expr: '"SALE_PRICE" * 0.5'
         data_type: FLOAT
         access_modifier: public_access
       - name: TIME_TO_SHIP
@@ -311,7 +320,7 @@ tables:
           - avg price
           - mean price
         description: "Average selling price per item, useful for pricing strategy analysis and basket composition insights."
-        expr: AVG(SALE_PRICE)
+        expr: AVG("SALE_PRICE" * 0.5)
         access_modifier: public_access
       - name: AVG_MARGIN
         synonyms:
@@ -392,10 +401,10 @@ tables:
           - customer value
           - spend per customer
         description: "Average revenue per unique customer, a proxy for customer value and spending patterns."
-        expr: "SUM(SALE_PRICE) / NULLIF(COUNT(DISTINCT USER_ID), 0)"
+        expr: "SUM(\"SALE_PRICE\" * 0.5) / NULLIF(COUNT(DISTINCT USER_ID), 0)"
         access_modifier: public_access
       - name: SEMI_ADDITIVE_SUM
-        expr: SUM(sale_price)
+        expr: SUM("SALE_PRICE" * 0.5)
         access_modifier: public_access
         non_additive_dimensions:
           - table: ORDER_ITEMS
@@ -448,10 +457,10 @@ tables:
           - total income
           - total sales
         description: Total revenue from all sales calculated as the sum of sale prices. The primary top-line metric for business performance.
-        expr: SUM(SALE_PRICE)
+        expr: SUM("SALE_PRICE" * 0.5)
         access_modifier: public_access
       - name: TOTAL_REVENUE_COMPLETED
-        expr: SUM(SALE_PRICE * completed_order)
+        expr: SUM("SALE_PRICE" * 0.5 * CASE WHEN STATUS = 'Complete' THEN 1 ELSE 0 END)
         access_modifier: public_access
   - name: PRODUCTS
     base_table:
@@ -557,8 +566,14 @@ tables:
           - product variety
           - sku count
         description: "Number of unique products/SKUs sold, indicating catalog breadth and product diversity."
-        expr: COUNT(DISTINCT PRODUCTS.ID)
+        expr: COUNT(DISTINCT ID)
         access_modifier: public_access
+      - name: ecomm__sales__products__total_cost
+        description: Total product costs from the product master, useful for cost variance analysis.
+        synonyms:
+          - merchandise cost
+          - product costs
+        expr: SUM(COST)
   - name: USERS
     base_table:
       database: ANALYTICS_PROD
@@ -741,7 +756,7 @@ relationships:
       - left_column: USER_ID
         right_column: ID
 module_custom_instructions:
-  sql_generation: "When generating SQL: 1) Always round monetary values to 2 decimal places, 2) Round percentages to 1 decimal place, 3) Exclude cancelled and returned orders from revenue calculations unless specifically asked about returns, 4) Use appropriate date truncation for time-based analysis"
+  sql_generation: "Use these instructions for question categorization: THis should be mapped to context\n\nUse these instructions for SQL generation: When generating SQL: 1) Always round monetary values to 2 decimal places, 2) Round percentages to 1 decimal place, 3) Exclude cancelled and returned orders from revenue calculations unless specifically asked about returns, 4) Use appropriate date truncation for time-based analysis"
   question_categorization: THis should be mapped to context
 verified_queries:
   - name: '"What is revenue"'
