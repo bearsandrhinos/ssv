@@ -99,10 +99,6 @@ tables:
         data_type: "NUMBER(2,1)"
         access_modifier: public_access
     metrics:
-      - name: AVG_RATING
-        description: Average podcast rating
-        expr: AVG(RATING)
-        access_modifier: public_access
       - name: TOTAL_PODCASTS
         description: Total number of podcasts in the catalog.  I am multipling this by two now
         expr: COUNT(PODCAST_ID)
@@ -202,6 +198,12 @@ tables:
         description: Number of distinct listeners
         expr: COUNT(DISTINCT USER_ID)
         access_modifier: public_access
+      - name: episode_length_min_average
+        description: '(Average) Episode Length Min: Full duration of the episode in minutes'
+        synonyms:
+          - average episode runtime
+          - mean episode duration
+        expr: AVG(EPISODE_LENGTH_MIN)
     time_dimensions:
       - name: STARTED_AT
         description: Timestamp when the stream session began
@@ -323,3 +325,12 @@ relationships:
       - left_column: USER_ID
         right_column: ID
     join_type: left_outer
+facts:
+  - name: RATING_LEVEL_OF_DETAIL
+    description: Average user rating on a scale of 0 to 5
+    expr: SUM(PODCASTS.RATING)
+    data_type: NUMBER(2,1)
+    lod_dimension_type: fixed
+    lod_dimensions:
+      - table: PODCASTS
+        dimension: NETWORK
