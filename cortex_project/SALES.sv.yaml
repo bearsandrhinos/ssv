@@ -353,7 +353,7 @@ tables:
           - max transaction
           - peak sale
         description: "The highest individual sale price in the dataset, useful for identifying premium purchases and outliers."
-        expr: MAX(SALE_PRICE)
+        expr: MAX("SALE_PRICE" * 0.5)
         access_modifier: public_access
       - name: MAX_TIME_TO_SHIP
         synonyms:
@@ -368,7 +368,7 @@ tables:
           - lowest sale
           - minimum price
         description: "The lowest sale price, useful for identifying deep discounts or promotional pricing."
-        expr: MIN(SALE_PRICE)
+        expr: MIN("SALE_PRICE" * 0.5)
         access_modifier: public_access
       - name: ORDERS_PER_CUSTOMER
         synonyms:
